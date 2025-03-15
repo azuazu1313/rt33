@@ -67,20 +67,21 @@ const SearchForm = () => {
             />
           </div>
 
-          {isReturn && (
-            <div className="relative">
-              <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-              <input
-                type="date"
-                className="w-full pl-10 pr-4 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 appearance-none"
-                style={{
-                  colorScheme: 'light',
-                  WebkitAppearance: 'none',
-                  MozAppearance: 'none'
-                }}
-              />
-            </div>
-          )}
+          <div className="relative">
+            <Calendar className={`absolute left-3 top-3 h-5 w-5 ${isReturn ? 'text-gray-400' : 'text-gray-300'}`} />
+            <input
+              type="date"
+              disabled={!isReturn}
+              className={`w-full pl-10 pr-4 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 appearance-none ${
+                !isReturn ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : ''
+              }`}
+              style={{
+                colorScheme: 'light',
+                WebkitAppearance: 'none',
+                MozAppearance: 'none'
+              }}
+            />
+          </div>
 
           <div className="relative flex items-center">
             <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
