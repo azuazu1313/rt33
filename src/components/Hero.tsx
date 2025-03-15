@@ -17,16 +17,16 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">
         <div className="grid md:grid-cols-2 gap-8 md:items-center">
-          <div className="text-white">
-            <h1 className="text-5xl font-bold mb-4">
-              The road is part of the adventure
+          <div className="text-white text-center md:text-right">
+            <h1 className="text-6xl font-bold mb-4">
+              The road is part of<br />the adventure
             </h1>
-            <p className="text-xl mb-8">
+            <p className="text-[18px] mb-8">
               Enjoy the trip — we'll handle the rest.
             </p>
           </div>
           
-          <div className="w-full md:max-w-xl lg:max-w-2xl md:justify-self-end">
+          <div className="w-full md:max-w-xl lg:max-w-2xl">
             <SearchForm />
           </div>
         </div>
