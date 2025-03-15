@@ -25,7 +25,7 @@ const Hero = () => {
                 The road is part of<br />the adventure
               </h1>
               <p className="text-[18px] mb-8">
-                Enjoy the trip — we'll handle the rest.
+                Enjoy the trip — we'll handle the rest
               </p>
             </div>
           </div>

@@ -32,11 +32,6 @@ const BookingProcess = () => {
                 <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
                 <p className="text-gray-600">{step.description}</p>
               </div>
-              {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2">
-                  <div className="w-8 h-0.5 bg-blue-600"></div>
-                </div>
-              )}
             </div>
           ))}
         </div>
