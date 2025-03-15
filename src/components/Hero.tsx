@@ -18,7 +18,7 @@ const Hero = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">
         <div className="grid md:grid-cols-2 gap-8 md:items-center">
           <div className="text-white text-center md:text-right">
-            <h1 className="text-6xl font-bold mb-4">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4">
               The road is part of<br />the adventure
             </h1>
             <p className="text-[18px] mb-8">
