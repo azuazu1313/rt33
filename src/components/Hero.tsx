@@ -1,7 +1,5 @@
 import React from 'react';
 import SearchForm from './SearchForm';
-import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
 
 const Hero = () => {
   return (
@@ -32,20 +30,6 @@ const Hero = () => {
             <SearchForm />
           </div>
         </div>
-
-        {/* Bouncing Arrow */}
-        <motion.div 
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-          initial={{ y: 0 }}
-          animate={{ y: [0, 10, 0] }}
-          transition={{ 
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        >
-          <ChevronDown className="w-8 h-8 text-white" />
-        </motion.div>
       </div>
     </div>
   );
