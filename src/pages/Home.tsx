@@ -8,6 +8,7 @@ import BookingProcess from '../components/BookingProcess';
 import Testimonials from '../components/Testimonials';
 import CallToAction from '../components/CallToAction';
 import Sitemap from '../components/Sitemap';
+import TrustBadges from '../components/TrustBadges';
 
 function Home() {
   return (
@@ -15,6 +16,7 @@ function Home() {
       <Header />
       <Hero />
       <Benefits />
+      <TrustBadges />
       <AboutPreview />
       <Services />
       <BookingProcess />

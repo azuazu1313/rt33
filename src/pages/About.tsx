@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import Sitemap from '../components/Sitemap';
+import TrustBadges from '../components/TrustBadges';
 import { motion } from 'framer-motion';
 
 const About = () => {
@@ -74,6 +75,8 @@ const About = () => {
                 <p className="text-gray-600">Available around the clock, our customer support team is committed to providing prompt responses, helpful solutions, and hassle-free support at every stage of your journey. At Royal Transfer EU, your peace of mind is our priority, and we're here for you—any time, every time.</p>
               </motion.div>
             </div>
+
+            <TrustBadges />
 
             <p className="text-xl text-gray-700 italic mb-4">
               Experience travel the way it was always meant to be: effortless, enjoyable, and worry-free.
