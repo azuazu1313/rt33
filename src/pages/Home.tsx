@@ -4,6 +4,7 @@ import Hero from '../components/Hero';
 import Benefits from '../components/Benefits';
 import AboutPreview from '../components/AboutPreview';
 import Services from '../components/Services';
+import FAQPreview from '../components/FAQPreview';
 import BookingProcess from '../components/BookingProcess';
 import Testimonials from '../components/Testimonials';
 import CallToAction from '../components/CallToAction';
@@ -19,6 +20,7 @@ function Home() {
       <TrustBadges />
       <AboutPreview />
       <Services />
+      <FAQPreview />
       <BookingProcess />
       <Testimonials />
       <CallToAction />
