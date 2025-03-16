@@ -46,32 +46,35 @@ const TrustBadges = () => {
           <div className="border-t pt-8">
             <p className="text-center text-gray-600 mb-6">Accepted Payment Methods</p>
             <div className="flex flex-col space-y-6">
-              <div className="flex justify-center items-center space-x-6">
-                <img 
-                  src="https://imgs.search.brave.com/vQ_CTHk50F04Cw1YQ9ZSYovb1YU1CzUnSbwszWTI_Q8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9hc3Nl/dHMuc3RpY2twbmcu/Y29tL2ltYWdlcy81/ODQ4MjM2M2NlZjEw/MTRjMGI1ZTQ5YzEu/cG5n" 
-                  alt="Visa" 
-                  className="h-8"
-                />
-                <img 
-                  src="https://imgs.search.brave.com/KECO8Cte79k8P0KUmH1MQUZwagpccrEehDZJRq42YW8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9hc3Nl/dHMuc3RpY2twbmcu/Y29tL2ltYWdlcy81/ODQ4MjM1NGNlZjEw/MTRjMGI1ZTQ5YzAu/cG5n" 
-                  alt="MasterCard" 
-                  className="h-8"
-                />
-                <img 
-                  src="https://imgs.search.brave.com/D-3MyxtcsQS-Nq9ZV5l6AG85LyTxOMTztKhJAWD6kPs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9hc3Nl/dHMuc3RpY2twbmcu/Y29tL2ltYWdlcy82/MGU3Zjk2NDcxMWNm/NzAwMDQ4YjZhNmEu/cG5n" 
-                  alt="Google Pay" 
-                  className="h-8"
-                />
-                <img 
-                  src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" 
-                  alt="Apple Pay" 
-                  className="h-8"
-                />
-                <img 
-                  src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" 
-                  alt="Stripe" 
-                  className="h-8"
-                />
+              <div className="grid grid-cols-2 md:flex md:justify-center items-center gap-6 md:space-x-6">
+                <div className="flex justify-center">
+                  <img 
+                    src="https://imgs.search.brave.com/vQ_CTHk50F04Cw1YQ9ZSYovb1YU1CzUnSbwszWTI_Q8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9hc3Nl/dHMuc3RpY2twbmcu/Y29tL2ltYWdlcy81/ODQ4MjM2M2NlZjEw/MTRjMGI1ZTQ5YzEu/cG5n" 
+                    alt="Visa" 
+                    className="h-8"
+                  />
+                </div>
+                <div className="flex justify-center">
+                  <img 
+                    src="https://imgs.search.brave.com/KECO8Cte79k8P0KUmH1MQUZwagpccrEehDZJRq42YW8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9hc3Nl/dHMuc3RpY2twbmcu/Y29tL2ltYWdlcy81/ODQ4MjM1NGNlZjEw/MTRjMGI1ZTQ5YzAu/cG5n" 
+                    alt="MasterCard" 
+                    className="h-8"
+                  />
+                </div>
+                <div className="flex justify-center">
+                  <img 
+                    src="https://imgs.search.brave.com/D-3MyxtcsQS-Nq9ZV5l6AG85LyTxOMTztKhJAWD6kPs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9hc3Nl/dHMuc3RpY2twbmcu/Y29tL2ltYWdlcy82/MGU3Zjk2NDcxMWNm/NzAwMDQ4YjZhNmEu/cG5n" 
+                    alt="Google Pay" 
+                    className="h-8"
+                  />
+                </div>
+                <div className="flex justify-center">
+                  <img 
+                    src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" 
+                    alt="Apple Pay" 
+                    className="h-8"
+                  />
+                </div>
               </div>
               <div className="flex justify-center items-center space-x-2">
                 <Banknote className="w-6 h-6 text-green-600" />

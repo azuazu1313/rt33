@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
@@ -182,7 +182,7 @@ const FAQ = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isContactDialogOpen, setIsContactDialogOpen] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState<number | null>(null);
-  const [expandedQuestion, setExpandedQuestion] = useState<string | null>(null);
+  const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(new Set());
 
   const filteredCategories = faqCategories.map(category => ({
     ...category,
@@ -193,16 +193,51 @@ const FAQ = () => {
     )
   })).filter(category => category.questions.length > 0);
 
+  // Effect to handle search results
+  useEffect(() => {
+    if (searchQuery) {
+      // Find the first category with matching questions
+      const firstMatchIndex = filteredCategories.findIndex(cat => cat.questions.length > 0);
+      if (firstMatchIndex !== -1) {
+        setExpandedCategory(firstMatchIndex);
+        // Expand the first matching question in that category
+        const questionId = `${firstMatchIndex}-0`;
+        setExpandedQuestions(new Set([questionId]));
+      }
+    } else {
+      // Clear expansions when search is cleared
+      setExpandedCategory(null);
+      setExpandedQuestions(new Set());
+    }
+  }, [searchQuery]);
+
   const toggleCategory = (index: number) => {
-    setExpandedCategory(expandedCategory === index ? null : index);
-    setExpandedQuestion(null);
+    if (expandedCategory === index) {
+      setExpandedCategory(null);
+      setExpandedQuestions(new Set());
+    } else {
+      setExpandedCategory(index);
+      // Keep only the questions from the newly selected category
+      const newExpandedQuestions = new Set([...expandedQuestions].filter(id => id.startsWith(`${index}-`)));
+      setExpandedQuestions(newExpandedQuestions);
+    }
   };
 
   const toggleQuestion = (categoryIndex: number, questionId: string) => {
+    const newExpandedQuestions = new Set(expandedQuestions);
+    
     if (expandedCategory !== categoryIndex) {
       setExpandedCategory(categoryIndex);
+      newExpandedQuestions.clear(); // Clear questions from other categories
     }
-    setExpandedQuestion(expandedQuestion === questionId ? null : questionId);
+    
+    if (newExpandedQuestions.has(questionId)) {
+      newExpandedQuestions.delete(questionId);
+    } else {
+      newExpandedQuestions.add(questionId);
+    }
+    
+    setExpandedQuestions(newExpandedQuestions);
   };
 
   return (
@@ -257,37 +292,40 @@ const FAQ = () => {
                       transition={{ duration: 0.2 }}
                     >
                       <div className="px-6 pb-4 space-y-4">
-                        {category.questions.map((item, qIndex) => (
-                          <div key={qIndex} className="border rounded-lg overflow-hidden">
-                            <button
-                              className="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
-                              onClick={() => toggleQuestion(categoryIndex, `${categoryIndex}-${qIndex}`)}
-                            >
-                              <h3 className="text-lg font-semibold">{item.question}</h3>
-                              <motion.div
-                                animate={{ 
-                                  rotate: expandedQuestion === `${categoryIndex}-${qIndex}` ? 180 : 0 
-                                }}
-                                transition={{ duration: 0.2 }}
+                        {category.questions.map((item, qIndex) => {
+                          const questionId = `${categoryIndex}-${qIndex}`;
+                          return (
+                            <div key={qIndex} className="border rounded-lg overflow-hidden">
+                              <button
+                                className="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                                onClick={() => toggleQuestion(categoryIndex, questionId)}
                               >
-                                <ChevronDown className="w-5 h-5 text-gray-500" />
-                              </motion.div>
-                            </button>
-
-                            <AnimatePresence>
-                              {expandedQuestion === `${categoryIndex}-${qIndex}` && (
+                                <h3 className="text-lg font-semibold">{item.question}</h3>
                                 <motion.div
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: 'auto', opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
+                                  animate={{ 
+                                    rotate: expandedQuestions.has(questionId) ? 180 : 0 
+                                  }}
                                   transition={{ duration: 0.2 }}
                                 >
-                                  <p className="px-4 pb-4 text-gray-600">{item.answer}</p>
+                                  <ChevronDown className="w-5 h-5 text-gray-500" />
                                 </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        ))}
+                              </button>
+
+                              <AnimatePresence>
+                                {expandedQuestions.has(questionId) && (
+                                  <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: 'auto', opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                  >
+                                    <p className="px-4 pb-4 text-gray-600">{item.answer}</p>
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </div>
+                          );
+                        })}
                       </div>
                     </motion.div>
                   )}

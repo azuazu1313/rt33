@@ -63,13 +63,55 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
           </div>
           
           <nav className="hidden md:flex space-x-6 lg:space-x-8">
-            <a href="/" className="text-gray-700 hover:text-blue-600">Home</a>
-            <a href="/about" className="text-gray-700 hover:text-blue-600">About Us</a>
-            <a href="/services" className="text-gray-700 hover:text-blue-600">Services</a>
-            <a href="/faq" className="text-gray-700 hover:text-blue-600">FAQs</a>
-            <a href="/partners" className="text-gray-700 hover:text-blue-600">Partners</a>
-            <a href="/rent" className="text-gray-700 hover:text-blue-600">Rent a Car</a>
-            <a href="/contact" className="text-gray-700 hover:text-blue-600">Contact</a>
+            <a 
+              href="/" 
+              className="relative py-2 text-gray-700 group"
+            >
+              Home
+              <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-full group-active:bg-blue-700 transition-all duration-300 -translate-x-1/2"></span>
+            </a>
+            <a 
+              href="/about" 
+              className="relative py-2 text-gray-700 group"
+            >
+              About Us
+              <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-full group-active:bg-blue-700 transition-all duration-300 -translate-x-1/2"></span>
+            </a>
+            <a 
+              href="/services" 
+              className="relative py-2 text-gray-700 group"
+            >
+              Services
+              <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-full group-active:bg-blue-700 transition-all duration-300 -translate-x-1/2"></span>
+            </a>
+            <a 
+              href="/faq" 
+              className="relative py-2 text-gray-700 group"
+            >
+              FAQs
+              <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-full group-active:bg-blue-700 transition-all duration-300 -translate-x-1/2"></span>
+            </a>
+            <a 
+              href="/partners" 
+              className="relative py-2 text-gray-700 group"
+            >
+              Partners
+              <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-full group-active:bg-blue-700 transition-all duration-300 -translate-x-1/2"></span>
+            </a>
+            <a 
+              href="/rent" 
+              className="relative py-2 text-gray-700 group"
+            >
+              Rent a Car
+              <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-full group-active:bg-blue-700 transition-all duration-300 -translate-x-1/2"></span>
+            </a>
+            <a 
+              href="/contact" 
+              className="relative py-2 text-gray-700 group"
+            >
+              Contact
+              <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-full group-active:bg-blue-700 transition-all duration-300 -translate-x-1/2"></span>
+            </a>
           </nav>
 
           <button 
