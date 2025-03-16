@@ -1,11 +1,12 @@
 import React from 'react';
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react';
 
 const Sitemap = () => {
   return (
     <footer className="bg-white border-t">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Quick Links */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
@@ -20,6 +21,7 @@ const Sitemap = () => {
             </ul>
           </div>
 
+          {/* Get Help */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Get Help</h3>
             <ul className="space-y-2">
@@ -30,6 +32,7 @@ const Sitemap = () => {
             </ul>
           </div>
 
+          {/* Contact Information */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Contact Information</h3>
             <ul className="space-y-4">
@@ -47,18 +50,34 @@ const Sitemap = () => {
               </li>
             </ul>
           </div>
+        </div>
 
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Social Media</h3>
-            <div className="flex space-x-4">
-              <a href="#" className="text-gray-600 hover:text-blue-600">Facebook</a>
-              <a href="https://www.instagram.com/royaltransfer1991/" className="text-gray-600 hover:text-blue-600">Instagram</a>
-              <a href="#" className="text-gray-600 hover:text-blue-600">LinkedIn</a>
-            </div>
-            <div className="mt-8">
-              <p className="text-sm text-gray-500">2025 Royal Transfer EU. All rights reserved.</p>
-            </div>
+        {/* Social Media & Copyright */}
+        <div className="mt-12 text-center">
+          <div className="flex justify-center space-x-4 mb-6">
+            <a 
+              href="#" 
+              className="p-3 bg-black rounded-full hover:bg-blue-600 transition-colors duration-300"
+              aria-label="Facebook"
+            >
+              <Facebook className="w-5 h-5 text-white" />
+            </a>
+            <a 
+              href="https://www.instagram.com/royaltransfer1991/" 
+              className="p-3 bg-black rounded-full hover:bg-blue-600 transition-colors duration-300"
+              aria-label="Instagram"
+            >
+              <Instagram className="w-5 h-5 text-white" />
+            </a>
+            <a 
+              href="#" 
+              className="p-3 bg-black rounded-full hover:bg-blue-600 transition-colors duration-300"
+              aria-label="LinkedIn"
+            >
+              <Linkedin className="w-5 h-5 text-white" />
+            </a>
           </div>
+          <p className="text-sm text-gray-500">© 2025 Royal Transfer EU. All rights reserved.</p>
         </div>
       </div>
     </footer>
