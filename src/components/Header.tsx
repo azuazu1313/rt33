@@ -57,13 +57,16 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
     <header className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          <div className="flex items-center">
+          <button 
+            onClick={() => navigate('/')}
+            className="flex items-center focus:outline-none"
+          >
             <img
               src="https://i.imgur.com/991MInn.png"
               alt="Royal Transfer EU Logo"
               className="w-full h-[78px]"
             />
-          </div>
+          </button>
           
           <nav className="hidden md:flex space-x-6 lg:space-x-8">
             <a 
