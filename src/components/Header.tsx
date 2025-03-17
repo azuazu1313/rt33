@@ -58,8 +58,11 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
-            <Crown className="h-8 w-8 text-blue-600" />
-            <span className="ml-2 text-xl font-bold">Royal Transfer EU</span>
+            <img
+              src="https://i.imgur.com/991MInn.png"
+              alt="Royal Transfer EU Logo"
+              className="w-full h-[78px]"
+            />
           </div>
           
           <nav className="hidden md:flex space-x-6 lg:space-x-8">
