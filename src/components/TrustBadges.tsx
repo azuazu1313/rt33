@@ -24,6 +24,11 @@ const TrustBadges = () => {
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
             >
+              <img 
+                src="https://imgs.search.brave.com/hTSLeIeT2GpU_PAug09N4LjrAr-EQVTBmH6nhY3nz1c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/cy13b3JsZC5uZXQv/d3AtY29udGVudC91/cGxvYWRzLzIwMjAv/MTEvVHJpcGFkdmlz/b3ItTG9nby03MDB4/Mzk0LnBuZw" 
+                alt="Tripadvisor Logo" 
+                className="h-16 mb-2"
+              />
               <div className="flex items-center mb-2">
                 <Star className="w-6 h-6 text-yellow-400 fill-current" />
                 <span className="text-2xl font-bold ml-2">4.9</span>

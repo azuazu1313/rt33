@@ -6,6 +6,7 @@ import AboutPreview from '../components/AboutPreview';
 import Services from '../components/Services';
 import FAQPreview from '../components/FAQPreview';
 import BookingProcess from '../components/BookingProcess';
+import FeaturedDestinations from '../components/FeaturedDestinations';
 import Testimonials from '../components/Testimonials';
 import CallToAction from '../components/CallToAction';
 import Sitemap from '../components/Sitemap';
@@ -22,6 +23,7 @@ function Home() {
       <Services />
       <FAQPreview />
       <BookingProcess />
+      <FeaturedDestinations />
       <Testimonials />
       <CallToAction />
       <Sitemap />
