@@ -1,5 +1,6 @@
 import React from 'react';
 import SearchForm from './SearchForm';
+import { motion } from 'framer-motion';
 
 const Hero = () => {
   return (
@@ -21,18 +22,33 @@ const Hero = () => {
         <div className="grid md:grid-cols-2 gap-8">
           <div className="text-white text-center md:text-right">
             <div className="md:absolute md:right-[50%] md:translate-x-[-2rem] md:top-[200px]">
-              <h1 className="text-4xl md:text-6xl font-bold mb-4">
+              <motion.h1 
+                className="text-4xl md:text-6xl font-bold mb-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6 }}
+              >
                 The road is part of<br />the adventure
-              </h1>
-              <p className="text-[18px] mb-8">
+              </motion.h1>
+              <motion.p 
+                className="text-[18px] mb-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
                 Enjoy the trip — we'll handle the rest
-              </p>
+              </motion.p>
             </div>
           </div>
           
-          <div className="w-full md:max-w-xl lg:max-w-2xl">
+          <motion.div 
+            className="w-full md:max-w-xl lg:max-w-2xl"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
             <SearchForm />
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

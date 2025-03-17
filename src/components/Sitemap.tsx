@@ -8,7 +8,7 @@ const Sitemap = () => {
         {/* Main Footer Content */}
         <div className="grid grid-cols-2 md:grid-cols-12 gap-12 md:gap-4">
           {/* Quick Links - Left on mobile, adjusted right on desktop */}
-          <div className="flex flex-col md:col-span-4 md:pl-8">
+          <div className="flex flex-col md:col-span-4" style={{ paddingLeft: '162px' }}>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li><a href="/" className="text-gray-600 hover:text-blue-600">Home</a></li>
@@ -23,18 +23,18 @@ const Sitemap = () => {
           </div>
 
           {/* Contact Information - Center on desktop, full width below on mobile */}
-          <div className="flex flex-col col-span-2 md:col-span-4 order-last md:order-none items-center md:items-start md:pl-24">
+          <div className="flex flex-col col-span-2 md:col-span-4 order-last md:order-none md:text-center">
             <h3 className="text-lg font-semibold mb-4">Contact Information</h3>
             <ul className="space-y-4">
-              <li className="flex items-center">
+              <li className="flex items-center md:justify-center">
                 <MapPin className="h-5 w-5 text-blue-600 mr-2" />
                 <span className="text-gray-600">123 Transfer Street, EU 12345</span>
               </li>
-              <li className="flex items-center">
+              <li className="flex items-center md:justify-center">
                 <Phone className="h-5 w-5 text-blue-600 mr-2" />
                 <span className="text-gray-600">24/7: +39 351 748 22 44</span>
               </li>
-              <li className="flex items-center">
+              <li className="flex items-center md:justify-center">
                 <Mail className="h-5 w-5 text-blue-600 mr-2" />
                 <span className="text-gray-600">contact@royaltransfer.eu</span>
               </li>
