@@ -80,6 +80,20 @@ const TrustBadges = () => {
                     className="h-8"
                   />
                 </div>
+                <div className="flex justify-center">
+                  <img 
+                    src="https://i.ibb.co/sJ6mfb7v/amexlogo.png" 
+                    alt="American Express AMEX" 
+                    className="h-12"
+                  />
+                </div>
+                <div className="flex justify-center">
+                  <img
+                    src="https://i.ibb.co/Rp0fZn10/stripe-logo-white-on-blue.png"
+                    alt="Stripe Payments"
+                    className="h-10"
+                  />
+                </div>
               </div>
               <div className="flex justify-center items-center space-x-2">
                 <Banknote className="w-6 h-6 text-green-600" />
