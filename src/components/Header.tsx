@@ -64,7 +64,7 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
             <img
               src="https://i.imgur.com/991MInn.png"
               alt="Royal Transfer EU Logo"
-              className="w-full h-[78px]"
+              className="w-full h-[68px]"
             />
           </button>
           
