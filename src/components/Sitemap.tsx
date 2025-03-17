@@ -6,11 +6,30 @@ const Sitemap = () => {
     <footer className="bg-white border-t">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-2 md:grid-cols-12 gap-12 md:gap-4">
-          {/* Quick Links - Left on mobile, adjusted right on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-4">
+          {/* Quick Links - Mobile: Custom order and alignment, Desktop: Original layout */}
           <div className="flex flex-col md:col-span-4">
-            <h3 className="text-lg font-semibold mb-4 text-center md:ml-[50px]">Quick Links</h3>
-            <div className="grid grid-cols-2 gap-x-8 gap-y-2 pl-[100px]">
+            <h3 className="text-lg font-semibold ml-1 mb-4 md:text-center md:ml-[50px] text-center">Quick Links</h3>
+            <div className="flex md:hidden">
+              <div className="w-1/2 pl-4">
+                <div className="space-y-2 text-left">
+                  <a href="/" className="block text-gray-600 hover:text-blue-600">Home</a>
+                  <a href="/faq" className="block text-gray-600 hover:text-blue-600">FAQs</a>
+                  <a href="/about" className="block text-gray-600 hover:text-blue-600">About Us</a>
+                  <a href="/partners" className="block text-gray-600 hover:text-blue-600">Partners</a>
+                </div>
+              </div>
+              <div className="w-1/2 pr-0">
+                <div className="space-y-2 text-right">
+                  <a href="/destinations" className="block text-gray-600 hover:text-blue-600">Destinations</a>
+                  <a href="/rent" className="block text-gray-600 hover:text-blue-600">Rent a Car</a>
+                  <a href="/services" className="block text-gray-600 hover:text-blue-600">Services</a>
+                  <a href="/contact" className="block text-gray-600 hover:text-blue-600">Contact</a>
+                </div>
+              </div>
+            </div>
+            {/* Desktop Layout */}
+            <div className="hidden md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-2 md:pl-[100px]">
               <a href="/" className="text-gray-600 hover:text-blue-600">Home</a>
               <a href="/about" className="text-gray-600 hover:text-blue-600">About Us</a>
               <a href="/services" className="text-gray-600 hover:text-blue-600">Services</a>
@@ -22,26 +41,51 @@ const Sitemap = () => {
             </div>
           </div>
 
-          {/* Contact Information - Center on desktop, full width below on mobile */}
-          <div className="flex flex-col col-span-2 md:col-span-4 order-last md:order-none md:text-center">
-            <h3 className="text-lg font-semibold mb-4">Contact Information</h3>
-            <ul className="space-y-4">
-              <li className="flex items-center md:justify-center">
-                <MapPin className="h-5 w-5 text-blue-600 mr-2" />
-                <span className="text-gray-600">123 Transfer Street, EU 12345</span>
+          {/* Contact Information - Center aligned on mobile */}
+          <div className="flex flex-col col-span-2 md:col-span-4 order-last md:order-none">
+            <h3 className="text-lg font-semibold mb-4 text-center">Contact Information</h3>
+            <ul className="space-y-4 max-w-[250px] mx-auto md:max-w-none">
+              <li className="flex items-start md:justify-center">
+                <MapPin className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
+                <span className="text-gray-600 text-left">123 Transfer Street, EU 12345</span>
               </li>
               <li className="flex items-center md:justify-center">
-                <Phone className="h-5 w-5 text-blue-600 mr-2" />
-                <span className="text-gray-600">24/7: +39 351 748 22 44</span>
+                <Phone className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
+                <span className="text-gray-600 text-left">24/7: +39 351 748 22 44</span>
               </li>
               <li className="flex items-center md:justify-center">
-                <Mail className="h-5 w-5 text-blue-600 mr-2" />
-                <span className="text-gray-600">contact@royaltransfer.eu</span>
+                <Mail className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
+                <span className="text-gray-600 text-left">contact@royaltransfer.eu</span>
               </li>
             </ul>
+            
+            {/* Social Media Icons - Only visible on mobile */}
+            <div className="md:hidden flex justify-center space-x-4 mt-6">
+              <a 
+                href="#" 
+                className="p-3 bg-black rounded-full hover:bg-blue-600 transition-colors duration-300"
+                aria-label="Facebook"
+              >
+                <Facebook className="w-5 h-5 text-white" />
+              </a>
+              <a 
+                href="https://www.instagram.com/royaltransfer1991/" 
+                className="p-3 bg-black rounded-full hover:bg-blue-600 transition-colors duration-300"
+                aria-label="Instagram"
+              >
+                <Instagram className="w-5 h-5 text-white" />
+              </a>
+              <a 
+                href="https://wa.me/3517482244" 
+                className="p-3 bg-black rounded-full hover:bg-blue-600 transition-colors duration-300"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle className="w-5 h-5 text-white" />
+              </a>
+            </div>
           </div>
 
-          {/* Get Help - Right on both mobile and desktop */}
+          {/* Get Help - Original layout preserved */}
           <div className="flex flex-col md:col-span-4 md:pl-32">
             <h3 className="text-lg font-semibold mb-4">Get Help</h3>
             <ul className="space-y-2">
@@ -53,10 +97,10 @@ const Sitemap = () => {
           </div>
         </div>
 
-        {/* Social Media & Copyright */}
+        {/* Social Media & Copyright - Hidden on mobile, visible on desktop */}
         <div className="mt-12 text-center">
           {/* Social Media */}
-          <div className="flex justify-center space-x-4 mb-6">
+          <div className="hidden md:flex justify-center space-x-4 mb-6">
             <a 
               href="#" 
               className="p-3 bg-black rounded-full hover:bg-blue-600 transition-colors duration-300"
