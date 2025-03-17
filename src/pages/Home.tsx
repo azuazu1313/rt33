@@ -18,12 +18,12 @@ function Home() {
       <Header />
       <Hero />
       <Benefits />
+      <FeaturedDestinations />
       <TrustBadges />
-      <AboutPreview />
       <Services />
+      <AboutPreview />
       <FAQPreview />
       <BookingProcess />
-      <FeaturedDestinations />
       <Testimonials />
       <CallToAction />
       <Sitemap />
