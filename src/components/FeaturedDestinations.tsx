@@ -47,6 +47,48 @@ const destinations: Destination[] = [
 ];
 
 const FeaturedDestinations = () => {
+  const renderStars = (rating: number) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasPartialStar = rating % 1 !== 0;
+
+    // Full stars
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(
+        <Star
+          key={`full-${i}`}
+          className="w-4 h-4 text-yellow-400 fill-current"
+        />
+      );
+    }
+
+    // Partial star
+    if (hasPartialStar) {
+      const percentage = (rating % 1) * 100;
+      stars.push(
+        <div key="partial" className="relative w-4 h-4">
+          <Star className="absolute w-4 h-4 text-gray-300" />
+          <div className="absolute overflow-hidden" style={{ width: `${percentage}%` }}>
+            <Star className="w-4 h-4 text-yellow-400 fill-current" />
+          </div>
+        </div>
+      );
+    }
+
+    // Empty stars
+    const emptyStars = 5 - stars.length;
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(
+        <Star
+          key={`empty-${i}`}
+          className="w-4 h-4 text-gray-300"
+        />
+      );
+    }
+
+    return stars;
+  };
+
   return (
     <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,20 +108,24 @@ const FeaturedDestinations = () => {
             >
               {/* Image Container */}
               <div className="relative aspect-video overflow-hidden rounded-lg">
-                <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                {/* Dark overlay - now properly visible on hover */}
+                <div 
+                  className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300 z-10"
+                  aria-hidden="true"
+                />
                 <img
                   src={destination.imageUrl}
-                  alt={destination.city}
+                  alt={`Scenic view of ${destination.city}, ${destination.country}`}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="text-white text-3xl font-bold">{destination.city}</span>
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                  <h3 className="text-white text-3xl font-bold">{destination.city}</h3>
                 </div>
               </div>
 
               {/* Details */}
               <div className="mt-4">
-                <h3 className="text-xl font-semibold mb-2">{destination.city}</h3>
+                <h4 className="text-xl font-semibold mb-2">{destination.city}</h4>
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center">
                     <span className="mr-2 text-lg">{destination.flag}</span>
@@ -87,16 +133,7 @@ const FeaturedDestinations = () => {
                   </div>
                   <div className="flex items-center">
                     <div className="flex items-center">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`w-4 h-4 ${
-                            i < Math.floor(destination.rating)
-                              ? 'text-yellow-400 fill-current'
-                              : 'text-gray-300'
-                          }`}
-                        />
-                      ))}
+                      {renderStars(destination.rating)}
                     </div>
                     <span className="ml-2 text-gray-600">
                       {destination.rating} ({destination.reviews} reviews)
