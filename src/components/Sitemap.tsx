@@ -10,16 +10,16 @@ const Sitemap = () => {
           {/* Quick Links - Left on mobile, adjusted right on desktop */}
           <div className="flex flex-col md:col-span-4" style={{ paddingLeft: '162px' }}>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li><a href="/" className="text-gray-600 hover:text-blue-600">Home</a></li>
-              <li><a href="/about" className="text-gray-600 hover:text-blue-600">About Us</a></li>
-              <li><a href="/services" className="text-gray-600 hover:text-blue-600">Services</a></li>
-              <li><a href="/destinations" className="text-gray-600 hover:text-blue-600">Destinations</a></li>
-              <li><a href="/faq" className="text-gray-600 hover:text-blue-600">FAQs</a></li>
-              <li><a href="/partners" className="text-gray-600 hover:text-blue-600">Partners</a></li>
-              <li><a href="/rent" className="text-gray-600 hover:text-blue-600">Rent a Car</a></li>
-              <li><a href="/contact" className="text-gray-600 hover:text-blue-600">Contact</a></li>
-            </ul>
+            <div className="grid grid-cols-2 gap-x-8 gap-y-2">
+              <a href="/" className="text-gray-600 hover:text-blue-600">Home</a>
+              <a href="/about" className="text-gray-600 hover:text-blue-600">About Us</a>
+              <a href="/services" className="text-gray-600 hover:text-blue-600">Services</a>
+              <a href="/faq" className="text-gray-600 hover:text-blue-600">FAQs</a>
+              <a href="/partners" className="text-gray-600 hover:text-blue-600">Partners</a>
+              <a href="/rent" className="text-gray-600 hover:text-blue-600">Rent a Car</a>
+              <a href="/destinations" className="text-gray-600 hover:text-blue-600">Destinations</a>
+              <a href="/contact" className="text-gray-600 hover:text-blue-600">Contact</a>
+            </div>
           </div>
 
           {/* Contact Information - Center on desktop, full width below on mobile */}
