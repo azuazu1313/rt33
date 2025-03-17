@@ -9,7 +9,7 @@ const Sitemap = () => {
         <div className="grid grid-cols-2 md:grid-cols-12 gap-12 md:gap-4">
           {/* Quick Links - Left on mobile, adjusted right on desktop */}
           <div className="flex flex-col md:col-span-4">
-            <h3 className="text-lg font-semibold mb-4 pl-[162px]">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-4 text-center md:ml-[50px]">Quick Links</h3>
             <div className="grid grid-cols-2 gap-x-8 gap-y-2 pl-[100px]">
               <a href="/" className="text-gray-600 hover:text-blue-600">Home</a>
               <a href="/about" className="text-gray-600 hover:text-blue-600">About Us</a>
