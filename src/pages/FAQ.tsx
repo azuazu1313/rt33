@@ -248,8 +248,8 @@ const FAQ = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <main className="pt-32 pb-16">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="pt-32">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
           <h1 className="text-4xl font-bold mb-6 text-center">Frequently Asked Questions</h1>
 
           <p className="text-lg text-gray-600 mb-8 text-center">
@@ -337,9 +337,11 @@ const FAQ = () => {
               </div>
             ))}
           </div>
+        </div>
 
-          {/* Still Need Help Section */}
-          <div className="mt-16 text-center space-y-4">
+        {/* Still Need Help Section */}
+        <div className="w-full bg-white py-16">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
             <h2 className="text-2xl font-bold mb-4">Still Have a Question?</h2>
             <p className="text-gray-600 mb-6">Our friendly team is available around the clock.</p>
             <div className="flex flex-col items-center space-y-4">
@@ -359,13 +361,15 @@ const FAQ = () => {
             </div>
           </div>
         </div>
+        <div className="w-full bg-gray-50 py-16 border-t">
+          <Newsletter webhookUrl="https://your-webhook-url.com/subscribe" />
+        </div>
       </main>
 
       <ContactDialog
         isOpen={isContactDialogOpen}
         onClose={() => setIsContactDialogOpen(false)}
       />
-      <Newsletter webhookUrl="https://your-webhook-url.com/subscribe" />
       <Sitemap />
     </div>
   );
