@@ -15,8 +15,9 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
 
   const handleCTAClick = () => {
     setIsMenuOpen(false); // Close menu when CTA is clicked
-    if (isAboutPage) {
+    if (location.pathname !== '/') {
       navigate('/');
+      // Wait for navigation to complete before scrolling
       setTimeout(() => {
         const bookingForm = document.getElementById('booking-form');
         if (bookingForm) {
@@ -130,7 +131,7 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
             onClick={handleCTAClick}
             className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-all duration-300"
           >
-            {isAboutPage ? 'Book Now' : 'Book Now'}
+            Book Now
           </button>
         </div>
       </div>

@@ -45,7 +45,7 @@ const Hero = () => {
             className="w-full md:max-w-xl lg:max-w-2xl"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
           >
             <SearchForm />
           </motion.div>
