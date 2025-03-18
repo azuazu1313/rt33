@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
 import Sitemap from '../components/Sitemap';
 import ContactDialog from '../components/ContactDialog';
+import Newsletter from '../components/Newsletter';
 
 interface FAQCategory {
   title: string;
@@ -364,7 +365,7 @@ const FAQ = () => {
         isOpen={isContactDialogOpen}
         onClose={() => setIsContactDialogOpen(false)}
       />
-
+      <Newsletter webhookUrl="https://your-webhook-url.com/subscribe" />
       <Sitemap />
     </div>
   );
