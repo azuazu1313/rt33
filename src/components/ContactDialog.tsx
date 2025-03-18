@@ -8,6 +8,16 @@ interface ContactDialogProps {
 }
 
 const ContactDialog = ({ isOpen, onClose }: ContactDialogProps) => {
+  const openAIChat = () => {
+    // Close the dialog first
+    onClose();
+    // @ts-ignore - voiceflow is added via script
+    if (window.voiceflow && window.voiceflow.chat) {
+      // @ts-ignore
+      window.voiceflow.chat.open();
+    }
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -73,6 +83,17 @@ const ContactDialog = ({ isOpen, onClose }: ContactDialogProps) => {
                     <div className="text-sm text-gray-600">support@royaltransfer.eu</div>
                   </div>
                 </a>
+
+                <button
+                  onClick={openAIChat}
+                  className="w-full flex items-center p-4 bg-[#FFD166] rounded-lg hover:opacity-90 transition-colors text-white"
+                >
+                  <MessageCircle className="w-6 h-6 mr-3" />
+                  <div className="text-left">
+                    <div className="font-semibold">Speak to us Instantly!</div>
+                    <div className="text-sm">Available 24/7</div>
+                  </div>
+                </button>
               </div>
             </motion.div>
           </motion.div>

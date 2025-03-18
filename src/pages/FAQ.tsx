@@ -250,13 +250,6 @@ const FAQ = () => {
       <main className="pt-32 pb-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold mb-6 text-center">Frequently Asked Questions</h1>
-          
-          {/* AI Chat Section */}
-          <div className="mb-12 bg-[#FFD166] rounded-lg p-6 text-center cursor-pointer hover:opacity-90 transition-opacity" onClick={openAIChat}>
-            <MessageCircle className="w-12 h-12 mx-auto mb-2 text-white" />
-            <h2 className="text-2xl font-bold text-white mb-2">Speak to us Instantly!</h2>
-            <p className="text-white text-lg">Available 24/7</p>
-          </div>
 
           <p className="text-lg text-gray-600 mb-8 text-center">
             We know your travel plans are important, and questions may arise. At Royal Transfer EU, 
@@ -345,15 +338,24 @@ const FAQ = () => {
           </div>
 
           {/* Still Need Help Section */}
-          <div className="mt-16 text-center">
+          <div className="mt-16 text-center space-y-4">
             <h2 className="text-2xl font-bold mb-4">Still Have a Question?</h2>
             <p className="text-gray-600 mb-6">Our friendly team is available around the clock.</p>
-            <button
-              onClick={() => setIsContactDialogOpen(true)}
-              className="bg-blue-600 text-white px-8 py-3 rounded-md hover:bg-blue-700 transition-all duration-300"
-            >
-              Contact Support Now
-            </button>
+            <div className="flex flex-col items-center space-y-4">
+              <button
+                onClick={() => setIsContactDialogOpen(true)}
+                className="bg-blue-600 text-white px-8 py-3 rounded-md hover:bg-blue-700 transition-all duration-300 w-64"
+              >
+                Contact Support Now
+              </button>
+              <button
+                onClick={openAIChat}
+                className="bg-[#FFD166] text-white px-8 py-3 rounded-md hover:opacity-90 transition-all duration-300 flex items-center justify-center w-64"
+              >
+                <MessageCircle className="w-6 h-6 mr-2" />
+                Speak to us Instantly!
+              </button>
+            </div>
           </div>
         </div>
       </main>
