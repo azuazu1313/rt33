@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ChevronDown } from 'lucide-react';
+import { Search, ChevronDown, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
 import Sitemap from '../components/Sitemap';
@@ -193,19 +193,15 @@ const FAQ = () => {
     )
   })).filter(category => category.questions.length > 0);
 
-  // Effect to handle search results
   useEffect(() => {
     if (searchQuery) {
-      // Find the first category with matching questions
       const firstMatchIndex = filteredCategories.findIndex(cat => cat.questions.length > 0);
       if (firstMatchIndex !== -1) {
         setExpandedCategory(firstMatchIndex);
-        // Expand the first matching question in that category
         const questionId = `${firstMatchIndex}-0`;
         setExpandedQuestions(new Set([questionId]));
       }
     } else {
-      // Clear expansions when search is cleared
       setExpandedCategory(null);
       setExpandedQuestions(new Set());
     }
@@ -217,7 +213,6 @@ const FAQ = () => {
       setExpandedQuestions(new Set());
     } else {
       setExpandedCategory(index);
-      // Keep only the questions from the newly selected category
       const newExpandedQuestions = new Set([...expandedQuestions].filter(id => id.startsWith(`${index}-`)));
       setExpandedQuestions(newExpandedQuestions);
     }
@@ -228,7 +223,7 @@ const FAQ = () => {
     
     if (expandedCategory !== categoryIndex) {
       setExpandedCategory(categoryIndex);
-      newExpandedQuestions.clear(); // Clear questions from other categories
+      newExpandedQuestions.clear();
     }
     
     if (newExpandedQuestions.has(questionId)) {
@@ -240,6 +235,14 @@ const FAQ = () => {
     setExpandedQuestions(newExpandedQuestions);
   };
 
+  const openAIChat = () => {
+    // @ts-ignore - voiceflow is added via script
+    if (window.voiceflow && window.voiceflow.chat) {
+      // @ts-ignore
+      window.voiceflow.chat.open();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -248,6 +251,13 @@ const FAQ = () => {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold mb-6 text-center">Frequently Asked Questions</h1>
           
+          {/* AI Chat Section */}
+          <div className="mb-12 bg-[#FFD166] rounded-lg p-6 text-center cursor-pointer hover:opacity-90 transition-opacity" onClick={openAIChat}>
+            <MessageCircle className="w-12 h-12 mx-auto mb-2 text-white" />
+            <h2 className="text-2xl font-bold text-white mb-2">Speak to us Instantly!</h2>
+            <p className="text-white text-lg">Available 24/7</p>
+          </div>
+
           <p className="text-lg text-gray-600 mb-8 text-center">
             We know your travel plans are important, and questions may arise. At Royal Transfer EU, 
             our goal is your peace of mind. Below are answers to the most frequently asked questions. 
