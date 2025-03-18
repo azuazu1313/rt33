@@ -9,7 +9,7 @@ const Sitemap = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-4">
           {/* Quick Links - Mobile: Custom order and alignment, Desktop: Original layout */}
           <div className="flex flex-col md:col-span-4">
-            <h3 className="text-lg font-semibold ml-1 mb-4 md:text-center md:ml-[50px] text-center">Quick Links</h3>
+            <h3 className="text-lg font-semibold ml-4 mb-4 md:text-center md:ml-[50px] text-center">Quick Links</h3>
             <div className="flex md:hidden">
               <div className="w-1/2 pl-4">
                 <div className="space-y-2 text-left">
