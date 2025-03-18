@@ -60,29 +60,7 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Hamburger Menu Button - Mobile Only */}
-          <button 
-            className="md:hidden flex flex-col justify-center items-center w-12 h-12 relative z-50"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            <div className="w-6 flex flex-col items-center justify-center">
-              <span 
-                className={`bg-gray-600 h-0.5 w-6 rounded-sm transition-all duration-300 ${
-                  isMenuOpen ? 'rotate-45 translate-y-[0.3rem] bg-gray-800' : ''
-                } absolute`}
-              />
-              <span 
-                className={`bg-gray-600 h-0.5 w-6 rounded-sm transition-all duration-300 ${
-                  isMenuOpen ? 'opacity-0' : ''
-                } absolute`}
-              />
-              <span 
-                className={`bg-gray-600 h-0.5 w-6 rounded-sm transition-all duration-300 ${
-                  isMenuOpen ? '-rotate-45 -translate-y-[0.3rem] bg-gray-800' : ''
-                } absolute`}
-              />
-            </div>
-          </button>
+          <div className="md:hidden w-12 h-12" /> {/* Spacer */}
 
           <button 
             onClick={() => navigate('/')}
@@ -179,9 +157,23 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
               transition={{ type: 'tween', duration: 0.3 }}
               className="fixed top-0 left-0 h-full w-[280px] bg-white z-40 md:hidden"
             >
+              {/* Close Button */}
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute top-3 right-3 w-12 h-12 flex items-center justify-center"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <div className="w-6 h-6 relative">
+                  <span className="absolute top-1/2 left-0 w-6 h-0.5 bg-gray-600 -translate-y-1/2 rotate-45"></span>
+                  <span className="absolute top-1/2 left-0 w-6 h-0.5 bg-gray-600 -translate-y-1/2 -rotate-45"></span>
+                </div>
+              </motion.button>
+
               <div className="flex flex-col h-full">
                 {/* Logo Section */}
-                <div className="p-4 border-b">
+                <div className="flex justify-center items-center p-4 border-b">
                   <img
                     src="https://i.imgur.com/991MInn.png"
                     alt="Royal Transfer EU Logo"
@@ -191,7 +183,7 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
 
                 {/* Navigation Links */}
                 <nav className="flex-1 overflow-y-auto p-4">
-                  <div className="space-y-4">
+                  <div className="flex flex-col space-y-4">
                     {[
                       { href: '/', label: 'Home' },
                       { href: '/about', label: 'About Us' },
@@ -201,13 +193,13 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
                       { href: '/rent', label: 'Rent a Car' },
                       { href: '/contact', label: 'Contact' }
                     ].map((link) => (
-                      <div key={link.href} className="inline-block">
+                      <div key={link.href} className="flex">
                         <a
                           href={link.href}
-                          className="relative py-2 text-gray-700 group inline-block"
+                          className="relative py-2 text-gray-700 group"
                           onClick={() => setIsMenuOpen(false)}
                         >
-                          {link.label}
+                          <span>{link.label}</span>
                           <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
                         </a>
                       </div>
@@ -229,6 +221,31 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
           </>
         )}
       </AnimatePresence>
+
+      {/* Mobile Menu Toggle Button */}
+      <button 
+        className="md:hidden fixed top-[22px] left-4 z-50 w-12 h-12 flex items-center justify-center"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        aria-label="Toggle menu"
+      >
+        <div className="w-6 h-4 relative flex flex-col justify-between">
+          <span 
+            className={`bg-gray-600 h-0.5 w-6 rounded-sm transition-all duration-300 ${
+              isMenuOpen ? 'opacity-0' : ''
+            }`}
+          />
+          <span 
+            className={`bg-gray-600 h-0.5 w-6 rounded-sm transition-all duration-300 ${
+              isMenuOpen ? 'opacity-0' : ''
+            }`}
+          />
+          <span 
+            className={`bg-gray-600 h-0.5 w-6 rounded-sm transition-all duration-300 ${
+              isMenuOpen ? 'opacity-0' : ''
+            }`}
+          />
+        </div>
+      </button>
     </header>
   );
 };
