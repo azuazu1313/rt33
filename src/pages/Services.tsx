@@ -7,6 +7,7 @@ import Testimonials from '../components/Testimonials';
 import { smoothScrollTo } from '../utils/smoothScroll';
 import { useNavigate } from 'react-router-dom';
 import { GlobeDemo } from '../components/ui/GlobeDemo';
+import { GlareCardDemo } from '../components/ui/glare-card-demo';
 
 const Services = () => {
   const navigate = useNavigate();
@@ -214,6 +215,16 @@ const Services = () => {
         </div>
       </section>
 
+      {/* Why Travelers Love Royal Transfer EU Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center mb-12">Why Travelers Love Royal Transfer EU</h2>
+          <div className="flex justify-center">
+            <GlareCardDemo />
+          </div>
+        </div>
+      </section>
+
       {/* Global Coverage Section */}
       <section className="py-16 bg-white">
         <GlobeDemo />
@@ -328,5 +339,3 @@ const Services = () => {
 };
 
 export default Services;
-
-export default Services
