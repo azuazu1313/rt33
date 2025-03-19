@@ -213,21 +213,18 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
                         </a>
                       </div>
                     ))}
-                    <div className="flex">
-                      <a
-                        href="/login"
-                        className="relative py-2 text-gray-700 group"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <span>Sign In</span>
-                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
-                      </a>
-                    </div>
                   </div>
                 </nav>
 
-                {/* CTA Button */}
-                <div className="p-4 border-t">
+                {/* Bottom Actions */}
+                <div className="p-4 border-t space-y-3">
+                  <a
+                    href="/login"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block w-full border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-md hover:bg-blue-50 transition-all duration-300 text-center"
+                  >
+                    Sign In
+                  </a>
                   <button 
                     onClick={handleCTAClick}
                     className="w-full bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-all duration-300"

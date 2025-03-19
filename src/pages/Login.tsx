@@ -25,6 +25,10 @@ const Login = () => {
     }));
   };
 
+  const handlePartnerClick = () => {
+    navigate('/partners#partner-form');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Minimal Header */}
@@ -113,13 +117,13 @@ const Login = () => {
 
             <div className="mt-6 text-center">
               {isDriver ? (
-                <Link
-                  to="/partners"
+                <button
+                  onClick={handlePartnerClick}
                   className="inline-flex items-center justify-center w-full bg-gray-100 text-gray-700 px-6 py-3 rounded-md hover:bg-gray-200 transition-all duration-300"
                 >
                   Partner with Us
                   <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
+                </button>
               ) : (
                 <Link
                   to="/rider-signup"

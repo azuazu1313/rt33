@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Car, ChevronDown, CheckCircle2, Star } from 'lucide-react';
 import Header from '../components/Header';
 import Sitemap from '../components/Sitemap';
 import Newsletter from '../components/Newsletter';
 import { smoothScrollTo } from '../utils/smoothScroll';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { GlobeDemo } from '../components/ui/GlobeDemo';
 import { GlareCardDemo } from '../components/ui/glare-card-demo';
 
@@ -65,11 +65,26 @@ const Partners = () => {
   });
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Check if we should scroll to the form (e.g., coming from login page)
+    if (location.hash === '#partner-form') {
+      setTimeout(() => {
+        const formSection = document.getElementById('partner-form');
+        if (formSection) {
+          const offset = 80;
+          const targetPosition = formSection.getBoundingClientRect().top + window.scrollY - offset;
+          smoothScrollTo(targetPosition, 1000);
+        }
+      }, 100); // Small delay to ensure the page is fully loaded
+    }
+  }, [location]);
 
   const scrollToForm = () => {
     const formSection = document.getElementById('partner-form');
     if (formSection) {
-      const offset = 80; // Account for header height
+      const offset = 80;
       const targetPosition = formSection.getBoundingClientRect().top + window.scrollY - offset;
       smoothScrollTo(targetPosition, 1000);
     }
