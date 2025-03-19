@@ -1,9 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, Calendar, Users, ArrowRight, Minus, Plus } from 'lucide-react';
+import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 
 const SearchForm = () => {
   const [isReturn, setIsReturn] = useState(true);
   const [passengers, setPassengers] = useState(1);
+  const [selectedPickup, setSelectedPickup] = useState('');
+  const [selectedDropoff, setSelectedDropoff] = useState('');
+
+  const {
+    ready: pickupReady,
+    value: pickupValue,
+    suggestions: { status: pickupStatus, data: pickupSuggestions },
+    setValue: setPickupValue,
+    clearSuggestions: clearPickupSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: { componentRestrictions: { country: ['it', 'fr', 'es', 'de'] } },
+    debounce: 300,
+  });
+
+  const {
+    ready: dropoffReady,
+    value: dropoffValue,
+    suggestions: { status: dropoffStatus, data: dropoffSuggestions },
+    setValue: setDropoffValue,
+    clearSuggestions: clearDropoffSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: { componentRestrictions: { country: ['it', 'fr', 'es', 'de'] } },
+    debounce: 300,
+  });
+
+  const handlePickupSelect = async (suggestion: google.maps.places.AutocompletePrediction) => {
+    setPickupValue(suggestion.description, false);
+    clearPickupSuggestions();
+    setSelectedPickup(suggestion.description);
+
+    try {
+      const results = await getGeocode({ address: suggestion.description });
+      const { lat, lng } = await getLatLng(results[0]);
+      console.log('Pickup coordinates:', { lat, lng });
+    } catch (error) {
+      console.error('Error getting coordinates:', error);
+    }
+  };
+
+  const handleDropoffSelect = async (suggestion: google.maps.places.AutocompletePrediction) => {
+    setDropoffValue(suggestion.description, false);
+    clearDropoffSuggestions();
+    setSelectedDropoff(suggestion.description);
+
+    try {
+      const results = await getGeocode({ address: suggestion.description });
+      const { lat, lng } = await getLatLng(results[0]);
+      console.log('Dropoff coordinates:', { lat, lng });
+    } catch (error) {
+      console.error('Error getting coordinates:', error);
+    }
+  };
 
   const handlePassengerChange = (increment: boolean) => {
     if (increment && passengers < 8) {
@@ -36,22 +89,56 @@ const SearchForm = () => {
         </div>
 
         <div className="space-y-4">
+          {/* Pickup Location */}
           <div className="relative">
             <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
             <input
               type="text"
-              placeholder="From"
+              placeholder="Pickup location"
+              value={pickupValue}
+              onChange={(e) => setPickupValue(e.target.value)}
+              disabled={!pickupReady}
               className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
+            {pickupStatus === "OK" && (
+              <ul className="absolute z-10 w-full bg-white mt-1 rounded-md shadow-lg max-h-60 overflow-auto">
+                {pickupSuggestions.map((suggestion) => (
+                  <li
+                    key={suggestion.place_id}
+                    onClick={() => handlePickupSelect(suggestion)}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    {suggestion.description}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
+          {/* Dropoff Location */}
           <div className="relative">
             <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
             <input
               type="text"
-              placeholder="To"
+              placeholder="Dropoff location"
+              value={dropoffValue}
+              onChange={(e) => setDropoffValue(e.target.value)}
+              disabled={!dropoffReady}
               className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
+            {dropoffStatus === "OK" && (
+              <ul className="absolute z-10 w-full bg-white mt-1 rounded-md shadow-lg max-h-60 overflow-auto">
+                {dropoffSuggestions.map((suggestion) => (
+                  <li
+                    key={suggestion.place_id}
+                    onClick={() => handleDropoffSelect(suggestion)}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    {suggestion.description}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <div className="relative">
@@ -111,7 +198,17 @@ const SearchForm = () => {
           </div>
         </div>
 
-        <button className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2">
+        <button 
+          className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
+          onClick={() => {
+            console.log({
+              type: isReturn ? 'round-trip' : 'one-way',
+              pickup: selectedPickup,
+              dropoff: selectedDropoff,
+              passengers
+            });
+          }}
+        >
           <span>See Prices</span>
           <ArrowRight className="h-5 w-5" />
         </button>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, User } from 'lucide-react';
 
 const WEBHOOK_URL = 'https://hook.eu1.make.com/def456uvw789';
@@ -31,6 +31,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ isOpen, onClose }) => {
 };
 
 const RiderSignup = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -69,6 +70,10 @@ const RiderSignup = () => {
       ...prev,
       [name]: value
     }));
+  };
+
+  const handleSignInClick = () => {
+    navigate('/login');
   };
 
   return (
@@ -203,9 +208,12 @@ const RiderSignup = () => {
             <div className="mt-6 text-center">
               <p className="text-gray-600">
                 Already have an account?{' '}
-                <Link to="/rider-login" className="text-blue-600 hover:text-blue-700 font-medium">
+                <button
+                  onClick={handleSignInClick}
+                  className="text-blue-600 hover:text-blue-700 font-medium"
+                >
                   Sign In
-                </Link>
+                </button>
               </p>
             </div>
 
