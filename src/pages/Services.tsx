@@ -6,6 +6,7 @@ import Sitemap from '../components/Sitemap';
 import Testimonials from '../components/Testimonials';
 import { smoothScrollTo } from '../utils/smoothScroll';
 import { useNavigate } from 'react-router-dom';
+import { GlobeDemo } from '../components/ui/GlobeDemo';
 
 const Services = () => {
   const navigate = useNavigate();
@@ -211,6 +212,11 @@ const Services = () => {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Global Coverage Section */}
+      <section className="py-16 bg-white">
+        <GlobeDemo />
       </section>
 
       {/* Booking Process */}
