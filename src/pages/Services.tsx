@@ -100,9 +100,8 @@ const Services = () => {
           <h2 className="text-xl font-bold text-black text-center mb-4">
             Travel doesn't have to be hard.
           </h2>
-          <p className="text-xl text-black text-center mb-16">
-            At Royal Transfer EU, <br />we have carefully planned services 
-            <br />to meet your every need.
+          <p className="text-[18px] text-black text-center mb-16">
+            At Royal Transfer EU, we have carefully planned services to meet your every need.
           </p>
 
           {/* Airport Transfers */}
