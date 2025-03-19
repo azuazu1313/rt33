@@ -139,14 +139,14 @@ const Header = ({ isAboutPage = false, hideSignIn = false }: HeaderProps) => {
             {!hideSignIn && (
               <a 
                 href="/login"
-                className="hidden md:inline-flex border-2 border-blue-600 text-blue-600 px-6 py-2.5 rounded-md hover:bg-blue-50 transition-all duration-300"
+                className="hidden md:inline-flex border border-blue-600 text-blue-600 px-[calc(1.5rem-1px)] py-[calc(0.5rem-1px)] rounded-md hover:bg-blue-50 transition-all duration-300 box-border"
               >
                 Sign In
               </a>
             )}
             <button 
               onClick={handleCTAClick}
-              className="bg-blue-600 text-white px-6 py-2.5 rounded-md hover:bg-blue-700 transition-all duration-300"
+              className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-all duration-300"
             >
               Book Now
             </button>
@@ -233,14 +233,14 @@ const Header = ({ isAboutPage = false, hideSignIn = false }: HeaderProps) => {
                     <a
                       href="/login"
                       onClick={() => setIsMenuOpen(false)}
-                      className="block w-full border-2 border-blue-600 text-blue-600 px-6 py-[12px] rounded-md hover:bg-blue-50 transition-all duration-300 text-center"
+                      className="block w-full border border-blue-600 text-blue-600 px-[calc(1.5rem-1px)] py-[calc(0.5rem-1px)] rounded-md hover:bg-blue-50 transition-all duration-300 text-center box-border"
                     >
                       Sign In
                     </a>
                   )}
                   <button 
                     onClick={handleCTAClick}
-                    className="w-full bg-blue-600 text-white px-6 py-2.5 rounded-md hover:bg-blue-700 transition-all duration-300"
+                    className="w-full bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-all duration-300"
                   >
                     Book Now
                   </button>
