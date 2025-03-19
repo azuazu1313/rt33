@@ -9,6 +9,8 @@ import Partners from './pages/Partners';
 import Login from './pages/Login';
 import Contact from './pages/Contact';
 import RiderSignup from './pages/RiderSignup';
+import Blogs from './pages/Blogs';
+import BlogsDestinations from './pages/BlogsDestinations';
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/blogs/destinations" element={<BlogsDestinations />} />
         <Route path="/blogs/:city" element={<BlogPost />} />
         <Route path="/services" element={<Services />} />
         <Route path="/partners" element={<Partners />} />
