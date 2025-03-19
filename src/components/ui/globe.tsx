@@ -21,20 +21,17 @@ const GLOBE_CONFIG: COBEOptions = {
   glowColor: [1, 1, 1],
   markers: [
     { location: [45.4642, 9.1900], size: 0.08 },  // Milan, Italy
-    { location: [41.9028, 12.4964], size: 0.12 },  // Rome, Italy
-    { location: [36.7213, -4.4217], size: 0.06 },  // Malaga, Spain
-    { location: [52.5200, 13.4050], size: 0.1 },   // Berlin, Germany
+    { location: [41.9028, 12.4964], size: 0.07 },  // Rome, Italy
+    { location: [36.7213, -4.4217], size: 0.1 },  // Malaga, Spain
+    { location: [52.5200, 13.4050], size: 0.07 },   // Berlin, Germany
     { location: [59.3293, 18.0686], size: 0.07 },  // Stockholm, Sweden
-    { location: [56.9460, 24.1059], size: 0.05 },  // Riga, Latvia
-    { location: [48.8566, 2.3522], size: 0.1 },   // Paris, France
-    { location: [43.7333, 7.4167], size: 0.09 },  // Monaco
-    { location: [51.5074, -0.1278], size: 0.11 },  // London, UK
-    { location: [48.2082, 16.3738], size: 0.08 },  // Vienna, Austria
-    { location: [50.8503, 4.3517], size: 0.1 },   // Brussels, Belgium
-    { location: [55.7558, 37.6173], size: 0.12 },  // Moscow, Russia
-    { location: [40.7306, -73.9352], size: 0.15 },  // New York, USA (just as a far example)
+    { location: [56.9460, 24.1059], size: 0.03 },  // Riga, Latvia
+    { location: [48.8566, 2.3522], size: 0.06 },   // Paris, France
+    { location: [43.7333, 7.4167], size: 0.04 },  // Monaco
+    { location: [48.2082, 16.3738], size: 0.06 },  // Vienna, Austria
+    { location: [40.7306, -73.9352], size: 0.13 },  // New York, USA (just as a far example)
     { location: [39.9334, 32.8597], size: 0.1 },   // Ankara, Turkey
-    { location: [60.1695, 24.9354], size: 0.07 },  // Helsinki, Finland
+    { location: [60.1695, 24.9354], size: 0.03 },  // Helsinki, Finland
   ],
 }
 
