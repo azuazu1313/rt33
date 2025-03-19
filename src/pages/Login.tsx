@@ -1,8 +1,30 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowLeft, Car, User } from 'lucide-react';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Car, User, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Login = () => {
+  const [isDriver, setIsDriver] = useState(false);
+  const [formData, setFormData] = useState({
+    emailOrPhone: '',
+    password: ''
+  });
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle login logic here
+    console.log('Login attempt:', formData);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Minimal Header */}
@@ -22,37 +44,94 @@ const Login = () => {
       <main className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
           <div className="bg-white p-8 rounded-lg shadow-lg">
-            <h1 className="text-3xl font-bold text-center mb-8">Select Login Type</h1>
+            <div className="flex items-center justify-center mb-8">
+              {isDriver ? (
+                <Car className="w-12 h-12 text-blue-600" />
+              ) : (
+                <User className="w-12 h-12 text-blue-600" />
+              )}
+            </div>
             
-            <div className="space-y-4">
-              <Link
-                to="/rider-login"
-                className="block w-full p-4 bg-white border-2 border-gray-200 rounded-lg hover:border-blue-600 hover:bg-blue-50 transition-all duration-300 group"
+            {/* Toggle Switch */}
+            <div className="flex bg-gray-100 p-1 rounded-lg mb-8">
+              <button
+                className={`flex-1 py-2 text-center rounded-lg transition-colors ${
+                  !isDriver ? 'bg-blue-600 text-white' : 'text-gray-700'
+                }`}
+                onClick={() => setIsDriver(false)}
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <User className="w-6 h-6 text-blue-600 mr-3" />
-                    <span className="font-semibold">Rider Login</span>
-                  </div>
-                  <ArrowRight className="w-5 h-5 text-blue-600 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
-
-              <Link
-                to="/driver-login"
-                className="block w-full p-4 bg-white border-2 border-gray-200 rounded-lg hover:border-blue-600 hover:bg-blue-50 transition-all duration-300 group"
+                Rider
+              </button>
+              <button
+                className={`flex-1 py-2 text-center rounded-lg transition-colors ${
+                  isDriver ? 'bg-blue-600 text-white' : 'text-gray-700'
+                }`}
+                onClick={() => setIsDriver(true)}
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <Car className="w-6 h-6 text-blue-600 mr-3" />
-                    <span className="font-semibold">Driver Login</span>
-                  </div>
-                  <ArrowRight className="w-5 h-5 text-blue-600 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
+                Driver
+              </button>
             </div>
 
-            {/* Back to Home Link */}
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="emailOrPhone" className="block text-sm font-medium text-gray-700 mb-1">
+                  Email or Phone
+                </label>
+                <input
+                  type="text"
+                  id="emailOrPhone"
+                  name="emailOrPhone"
+                  value={formData.emailOrPhone}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-all duration-300"
+              >
+                Sign In
+              </button>
+            </form>
+
+            <div className="mt-6 text-center">
+              {isDriver ? (
+                <Link
+                  to="/partners"
+                  className="inline-flex items-center justify-center w-full bg-gray-100 text-gray-700 px-6 py-3 rounded-md hover:bg-gray-200 transition-all duration-300"
+                >
+                  Partner with Us
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              ) : (
+                <Link
+                  to="/rider-signup"
+                  className="inline-flex items-center justify-center w-full bg-gray-100 text-gray-700 px-6 py-3 rounded-md hover:bg-gray-200 transition-all duration-300"
+                >
+                  Sign Up as Rider
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              )}
+            </div>
+
+            {/* Back Link */}
             <div className="mt-8 text-center">
               <Link
                 to="/"

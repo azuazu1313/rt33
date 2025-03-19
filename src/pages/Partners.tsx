@@ -5,6 +5,9 @@ import Header from '../components/Header';
 import Sitemap from '../components/Sitemap';
 import Newsletter from '../components/Newsletter';
 import { smoothScrollTo } from '../utils/smoothScroll';
+import { useNavigate } from 'react-router-dom';
+import { GlobeDemo } from '../components/ui/GlobeDemo';
+import { GlareCardDemo } from '../components/ui/glare-card-demo';
 
 interface FAQ {
   question: string;
@@ -61,6 +64,8 @@ const Partners = () => {
     website: ''
   });
 
+  const navigate = useNavigate();
+
   const scrollToForm = () => {
     const formSection = document.getElementById('partner-form');
     if (formSection) {
@@ -68,6 +73,10 @@ const Partners = () => {
       const targetPosition = formSection.getBoundingClientRect().top + window.scrollY - offset;
       smoothScrollTo(targetPosition, 1000);
     }
+  };
+
+  const handleSignInClick = () => {
+    navigate('/login');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -140,7 +149,7 @@ const Partners = () => {
               Sign Up
             </button>
             <button 
-              onClick={scrollToForm}
+              onClick={handleSignInClick}
               className="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-md hover:bg-blue-50 transition-all duration-300"
             >
               Sign In
