@@ -127,12 +127,20 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
             </a>
           </nav>
 
-          <button 
-            onClick={handleCTAClick}
-            className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-all duration-300"
-          >
-            Book Now
-          </button>
+          <div className="flex items-center space-x-4">
+            <a 
+              href="/login"
+              className="hidden md:inline-flex border-2 border-blue-600 text-blue-600 px-6 py-2 rounded-md hover:bg-blue-50 transition-all duration-300"
+            >
+              Sign In
+            </a>
+            <button 
+              onClick={handleCTAClick}
+              className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-all duration-300"
+            >
+              Book Now
+            </button>
+          </div>
         </div>
       </div>
 
@@ -205,6 +213,16 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
                         </a>
                       </div>
                     ))}
+                    <div className="flex">
+                      <a
+                        href="/login"
+                        className="relative py-2 text-gray-700 group"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <span>Sign In</span>
+                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
+                      </a>
+                    </div>
                   </div>
                 </nav>
 
