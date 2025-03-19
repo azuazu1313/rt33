@@ -6,9 +6,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
   isAboutPage?: boolean;
+  hideSignIn?: boolean;
 }
 
-const Header = ({ isAboutPage = false }: HeaderProps) => {
+const Header = ({ isAboutPage = false, hideSignIn = false }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -135,15 +136,17 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <a 
-              href="/login"
-              className="hidden md:inline-flex border-2 border-blue-600 text-blue-600 px-6 py-2 rounded-md hover:bg-blue-50 transition-all duration-300"
-            >
-              Sign In
-            </a>
+            {!hideSignIn && (
+              <a 
+                href="/login"
+                className="hidden md:inline-flex border-2 border-blue-600 text-blue-600 px-6 py-2.5 rounded-md hover:bg-blue-50 transition-all duration-300"
+              >
+                Sign In
+              </a>
+            )}
             <button 
               onClick={handleCTAClick}
-              className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-all duration-300"
+              className="bg-blue-600 text-white px-6 py-2.5 rounded-md hover:bg-blue-700 transition-all duration-300"
             >
               Book Now
             </button>
@@ -226,16 +229,18 @@ const Header = ({ isAboutPage = false }: HeaderProps) => {
 
                 {/* Bottom Actions */}
                 <div className="p-4 border-t space-y-3">
-                  <a
-                    href="/login"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="block w-full border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-md hover:bg-blue-50 transition-all duration-300 text-center"
-                  >
-                    Sign In
-                  </a>
+                  {!hideSignIn && (
+                    <a
+                      href="/login"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="block w-full border-2 border-blue-600 text-blue-600 px-6 py-[12px] rounded-md hover:bg-blue-50 transition-all duration-300 text-center"
+                    >
+                      Sign In
+                    </a>
+                  )}
                   <button 
                     onClick={handleCTAClick}
-                    className="w-full bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-all duration-300"
+                    className="w-full bg-blue-600 text-white px-6 py-2.5 rounded-md hover:bg-blue-700 transition-all duration-300"
                   >
                     Book Now
                   </button>
