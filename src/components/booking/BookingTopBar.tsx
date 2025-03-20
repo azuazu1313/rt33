@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin, Users, Plus, Minus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface BookingTopBarProps {
   from: string;
   to: string;
   type: 'one-way' | 'round-trip';
   date: string;
+  onRouteUpdate?: (newRoute: { from: string; to: string; type: string; date: string }) => void;
 }
 
-const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date }) => {
+const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onRouteUpdate }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [passengers, setPassengers] = useState(1);
   const [formData, setFormData] = useState({
     from,
@@ -20,6 +22,16 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date }) =
     type,
     date
   });
+
+  // Reset form data when props change
+  useEffect(() => {
+    setFormData({
+      from,
+      to,
+      type,
+      date
+    });
+  }, [from, to, type, date]);
 
   const {
     ready: pickupReady,
@@ -44,6 +56,11 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date }) =
     debounce: 300,
     defaultValue: to
   });
+
+  useEffect(() => {
+    setPickupValue(from, false);
+    setDropoffValue(to, false);
+  }, [from, to]);
 
   const handlePickupSelect = async (suggestion: google.maps.places.AutocompletePrediction) => {
     setPickupValue(suggestion.description, false);
@@ -112,7 +129,20 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date }) =
     const updatedType = type;
     const updatedDate = formData.date;
 
-    navigate(`/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}/form`);
+    const newRoute = {
+      from: formData.from,
+      to: formData.to,
+      type: updatedType,
+      date: updatedDate
+    };
+
+    // If we're on step 1, use the callback
+    if (location.pathname.endsWith('/form') && onRouteUpdate) {
+      onRouteUpdate(newRoute);
+    } else {
+      // For other steps, navigate with replace
+      navigate(`/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}/form`, { replace: true });
+    }
   };
 
   return (

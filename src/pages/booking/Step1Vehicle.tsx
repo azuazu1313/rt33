@@ -119,6 +119,14 @@ const Step1Vehicle = () => {
     navigate(`/transfer/${from}/${to}/${type}/${date}/details`);
   };
 
+  const handleRouteUpdate = (newRoute: { from: string; to: string; type: string; date: string }) => {
+    const updatedFrom = encodeURIComponent(newRoute.from.toLowerCase().replace(/\s+/g, '-'));
+    const updatedTo = encodeURIComponent(newRoute.to.toLowerCase().replace(/\s+/g, '-'));
+    
+    // Force reload the page with new route
+    window.location.href = `/transfer/${updatedFrom}/${updatedTo}/${newRoute.type}/${newRoute.date}/form`;
+  };
+
   return (
     <BookingLayout
       currentStep={1}
