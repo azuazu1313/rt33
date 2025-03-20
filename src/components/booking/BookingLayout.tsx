@@ -38,23 +38,14 @@ const BookingLayout: React.FC<BookingLayoutProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] relative">
+    <div className="min-h-screen bg-[#f8fafc]">
       <Header />
       
       <main className="pt-20 pb-32">
-        {/* Background Overlay */}
-        <div 
-          className="absolute inset-0 z-0 opacity-10 bg-cover bg-center"
-          style={{
-            backgroundImage: 'url("https://i.imgur.com/DxQsDc9.jpeg")',
-            backgroundAttachment: 'fixed'
-          }}
-        />
-
         {/* Content */}
         <div className="relative z-10">
           {/* Top Booking Bar */}
-          <div className="mb-8 px-4 sm:px-6 lg:px-8">
+          <div className="mb-8 mt-8 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
               <div className="bg-white rounded-xl shadow-lg">
                 <BookingTopBar
