@@ -124,7 +124,7 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ini
 
   const handleUpdateRoute = () => {
     if (!hasChanges) return;
-    
+
     const updatedFrom = encodeURIComponent(formData.from.toLowerCase().replace(/\s+/g, '-'));
     const updatedTo = encodeURIComponent(formData.to.toLowerCase().replace(/\s+/g, '-'));
     const updatedType = type;
@@ -142,27 +142,11 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ini
     if (location.pathname.endsWith('/form') && onRouteUpdate) {
       onRouteUpdate(newRoute);
     } else {
-      // For other steps, check if only passengers changed
-      const onlyPassengersChanged = 
-        formData.from === from &&
-        formData.to === to &&
-        formData.date === date &&
-        formData.passengers !== initialPassengers;
-
-      if (onlyPassengersChanged) {
-        // Navigate to the same step with updated passengers
-        const currentPath = location.pathname;
-        navigate(currentPath, {
-          replace: true,
-          state: { passengers: formData.passengers }
-        });
-      } else {
-        // Navigate back to step 1 with all updates
-        navigate(`/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}/form`, { 
-          replace: true,
-          state: { passengers: formData.passengers }
-        });
-      }
+      // For any route changes (including just passengers), navigate to step 1
+      navigate(`/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}/form`, { 
+        replace: true,
+        state: { passengers: formData.passengers }
+      });
     }
   };
 

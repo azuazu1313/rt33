@@ -112,11 +112,11 @@ const Step1Vehicle = () => {
   const navigate = useNavigate();
   const { from, to, type, date } = useParams();
   const location = useLocation();
-  const initialPassengers = location.state?.passengers || 1;
   
+  // Initialize passengers from location state or default to 1
+  const [passengers, setPassengers] = useState(location.state?.passengers || 1);
   const [selectedVehicle, setSelectedVehicle] = useState(vehicles[0]);
   const [modalVehicle, setModalVehicle] = useState<typeof vehicles[0] | null>(null);
-  const [passengers, setPassengers] = useState(initialPassengers);
 
   const handleNext = () => {
     navigate(`/transfer/${from}/${to}/${type}/${date}/details`, {
@@ -125,6 +125,7 @@ const Step1Vehicle = () => {
   };
 
   const handleRouteUpdate = (newRoute: { from: string; to: string; type: string; date: string; passengers: number }) => {
+    // Update the passengers state when route is updated
     setPassengers(newRoute.passengers);
   };
 
