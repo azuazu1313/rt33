@@ -34,18 +34,20 @@ const VehicleCard: React.FC<VehicleCardProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`bg-white rounded-lg shadow-md p-6 ${
+      className={`bg-white rounded-xl shadow-lg p-6 relative ${
         isSelected ? 'ring-2 ring-blue-600' : ''
       }`}
     >
-      {/* Selected Indicator */}
-      {isSelected && (
-        <div className="flex items-center mb-4">
-          <span className="bg-blue-100 text-blue-600 px-4 py-1 rounded-full text-sm font-medium">
-            Selected
-          </span>
-        </div>
-      )}
+      {/* Selected Badge */}
+      <div 
+        className={`absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-medium transition-opacity duration-300 ${
+          isSelected 
+            ? 'opacity-100 bg-blue-100 text-blue-600' 
+            : 'opacity-0'
+        }`}
+      >
+        Selected
+      </div>
 
       {/* Vehicle Image */}
       <div className="relative aspect-[16/9] mb-4">
@@ -62,8 +64,9 @@ const VehicleCard: React.FC<VehicleCardProps> = ({
           <h3 className="text-xl font-bold">{name}</h3>
           <button
             onClick={onLearnMore}
-            className="text-gray-500 hover:text-blue-600 transition-colors"
+            className="flex items-center text-gray-500 hover:text-blue-600 transition-colors p-2 hover:bg-gray-100 rounded-lg group"
           >
+            <span className="mr-2 text-sm group-hover:text-blue-600">Learn more</span>
             <Info className="w-5 h-5" />
           </button>
         </div>
@@ -105,16 +108,17 @@ const VehicleCard: React.FC<VehicleCardProps> = ({
             <div className="text-sm text-gray-600">From</div>
             <div className="text-2xl font-bold">€{price.toFixed(2)}</div>
           </div>
-          <button
+          <motion.button
+            whileTap={{ scale: 0.95 }}
             onClick={onSelect}
-            className={`px-6 py-2 rounded-md transition-colors ${
+            className={`px-6 py-2 rounded-lg transition-colors ${
               isSelected
                 ? 'bg-gray-100 text-gray-600'
                 : 'bg-blue-600 text-white hover:bg-blue-700'
             }`}
           >
             {isSelected ? 'Selected' : 'Choose'}
-          </button>
+          </motion.button>
         </div>
       </div>
     </motion.div>
