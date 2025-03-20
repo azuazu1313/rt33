@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import BookingLayout from '../../components/booking/BookingLayout';
 import VehicleCard from '../../components/booking/VehicleCard';
 import VehicleModal from '../../components/booking/VehicleModal';
@@ -111,20 +111,21 @@ const vehicles = [
 const Step1Vehicle = () => {
   const navigate = useNavigate();
   const { from, to, type, date } = useParams();
+  const location = useLocation();
+  const initialPassengers = location.state?.passengers || 1;
   
   const [selectedVehicle, setSelectedVehicle] = useState(vehicles[0]);
   const [modalVehicle, setModalVehicle] = useState<typeof vehicles[0] | null>(null);
+  const [passengers, setPassengers] = useState(initialPassengers);
 
   const handleNext = () => {
-    navigate(`/transfer/${from}/${to}/${type}/${date}/details`);
+    navigate(`/transfer/${from}/${to}/${type}/${date}/details`, {
+      state: { passengers }
+    });
   };
 
-  const handleRouteUpdate = (newRoute: { from: string; to: string; type: string; date: string }) => {
-    const updatedFrom = encodeURIComponent(newRoute.from.toLowerCase().replace(/\s+/g, '-'));
-    const updatedTo = encodeURIComponent(newRoute.to.toLowerCase().replace(/\s+/g, '-'));
-    
-    // Force reload the page with new route
-    window.location.href = `/transfer/${updatedFrom}/${updatedTo}/${newRoute.type}/${newRoute.date}/form`;
+  const handleRouteUpdate = (newRoute: { from: string; to: string; type: string; date: string; passengers: number }) => {
+    setPassengers(newRoute.passengers);
   };
 
   return (

@@ -9,18 +9,19 @@ interface BookingTopBarProps {
   to: string;
   type: 'one-way' | 'round-trip';
   date: string;
-  onRouteUpdate?: (newRoute: { from: string; to: string; type: string; date: string }) => void;
+  initialPassengers?: number;
+  onRouteUpdate?: (newRoute: { from: string; to: string; type: string; date: string; passengers: number }) => void;
 }
 
-const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onRouteUpdate }) => {
+const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, initialPassengers = 1, onRouteUpdate }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [passengers, setPassengers] = useState(1);
   const [formData, setFormData] = useState({
     from,
     to,
     type,
-    date
+    date,
+    passengers: initialPassengers
   });
 
   // Reset form data when props change
@@ -29,9 +30,10 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
       from,
       to,
       type,
-      date
+      date,
+      passengers: initialPassengers
     });
-  }, [from, to, type, date]);
+  }, [from, to, type, date, initialPassengers]);
 
   const {
     ready: pickupReady,
@@ -91,9 +93,8 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
   };
 
   const handlePassengerChange = (increment: boolean) => {
-    const newPassengers = increment ? passengers + 1 : passengers - 1;
+    const newPassengers = increment ? formData.passengers + 1 : formData.passengers - 1;
     if (newPassengers >= 1 && newPassengers <= 8) {
-      setPassengers(newPassengers);
       setFormData(prev => ({ ...prev, passengers: newPassengers }));
     }
   };
@@ -102,7 +103,7 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
     formData.from !== from ||
     formData.to !== to ||
     formData.date !== date ||
-    passengers !== 1;
+    formData.passengers !== initialPassengers;
 
   const handlePickupChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -133,15 +134,19 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
       from: formData.from,
       to: formData.to,
       type: updatedType,
-      date: updatedDate
+      date: updatedDate,
+      passengers: formData.passengers
     };
 
     // If we're on step 1, use the callback
     if (location.pathname.endsWith('/form') && onRouteUpdate) {
       onRouteUpdate(newRoute);
     } else {
-      // For other steps, navigate with replace
-      navigate(`/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}/form`, { replace: true });
+      // For other steps, navigate with replace and include passengers in the state
+      navigate(`/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}/form`, { 
+        replace: true,
+        state: { passengers: formData.passengers }
+      });
     }
   };
 
@@ -222,23 +227,23 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
             <div className="relative">
               <Users className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
               <div className="w-full h-[42px] pl-10 pr-4 border border-gray-200 rounded-lg bg-white flex justify-between items-center">
-                <span className="text-gray-700">{passengers} Passenger{passengers !== 1 ? 's' : ''}</span>
+                <span className="text-gray-700">{formData.passengers} Passenger{formData.passengers !== 1 ? 's' : ''}</span>
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => handlePassengerChange(false)}
                     className={`p-1 rounded-full transition-colors ${
-                      passengers > 1 ? 'text-blue-600 hover:bg-blue-50 active:bg-blue-100' : 'text-gray-300'
+                      formData.passengers > 1 ? 'text-blue-600 hover:bg-blue-50 active:bg-blue-100' : 'text-gray-300'
                     }`}
-                    disabled={passengers <= 1}
+                    disabled={formData.passengers <= 1}
                   >
                     <Minus className="h-4 w-4" />
                   </button>
                   <button
                     onClick={() => handlePassengerChange(true)}
                     className={`p-1 rounded-full transition-colors ${
-                      passengers < 8 ? 'text-blue-600 hover:bg-blue-50 active:bg-blue-100' : 'text-gray-300'
+                      formData.passengers < 8 ? 'text-blue-600 hover:bg-blue-50 active:bg-blue-100' : 'text-gray-300'
                     }`}
-                    disabled={passengers >= 8}
+                    disabled={formData.passengers >= 8}
                   >
                     <Plus className="h-4 w-4" />
                   </button>
