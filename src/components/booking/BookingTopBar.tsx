@@ -142,11 +142,27 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ini
     if (location.pathname.endsWith('/form') && onRouteUpdate) {
       onRouteUpdate(newRoute);
     } else {
-      // For other steps, navigate with replace and include passengers in the state
-      navigate(`/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}/form`, { 
-        replace: true,
-        state: { passengers: formData.passengers }
-      });
+      // For other steps, check if only passengers changed
+      const onlyPassengersChanged = 
+        formData.from === from &&
+        formData.to === to &&
+        formData.date === date &&
+        formData.passengers !== initialPassengers;
+
+      if (onlyPassengersChanged) {
+        // Navigate to the same step with updated passengers
+        const currentPath = location.pathname;
+        navigate(currentPath, {
+          replace: true,
+          state: { passengers: formData.passengers }
+        });
+      } else {
+        // Navigate back to step 1 with all updates
+        navigate(`/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}/form`, { 
+          replace: true,
+          state: { passengers: formData.passengers }
+        });
+      }
     }
   };
 
