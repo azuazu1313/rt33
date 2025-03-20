@@ -7,9 +7,11 @@ const SearchForm = () => {
   const navigate = useNavigate();
   const [isReturn, setIsReturn] = useState(true);
   const [passengers, setPassengers] = useState(1);
-  const [selectedPickup, setSelectedPickup] = useState('');
-  const [selectedDropoff, setSelectedDropoff] = useState('');
-  const [departureDate, setDepartureDate] = useState('');
+  const [formData, setFormData] = useState({
+    pickup: '',
+    dropoff: '',
+    departureDate: '',
+  });
 
   const {
     ready: pickupReady,
@@ -36,7 +38,7 @@ const SearchForm = () => {
   const handlePickupSelect = async (suggestion: google.maps.places.AutocompletePrediction) => {
     setPickupValue(suggestion.description, false);
     clearPickupSuggestions();
-    setSelectedPickup(suggestion.description);
+    setFormData(prev => ({ ...prev, pickup: suggestion.description }));
 
     try {
       const results = await getGeocode({ address: suggestion.description });
@@ -50,7 +52,7 @@ const SearchForm = () => {
   const handleDropoffSelect = async (suggestion: google.maps.places.AutocompletePrediction) => {
     setDropoffValue(suggestion.description, false);
     clearDropoffSuggestions();
-    setSelectedDropoff(suggestion.description);
+    setFormData(prev => ({ ...prev, dropoff: suggestion.description }));
 
     try {
       const results = await getGeocode({ address: suggestion.description });
@@ -70,16 +72,32 @@ const SearchForm = () => {
   };
 
   const handleSubmit = () => {
-    if (!selectedPickup || !selectedDropoff || !departureDate) {
+    // Allow direct input if Places API is not available
+    const pickup = pickupValue || formData.pickup;
+    const dropoff = dropoffValue || formData.dropoff;
+    
+    if (!pickup || !dropoff || !formData.departureDate) {
       alert('Please fill in all required fields');
       return;
     }
 
-    const from = encodeURIComponent(selectedPickup.toLowerCase().replace(/\s+/g, '-'));
-    const to = encodeURIComponent(selectedDropoff.toLowerCase().replace(/\s+/g, '-'));
+    const from = encodeURIComponent(pickup.toLowerCase().replace(/\s+/g, '-'));
+    const to = encodeURIComponent(dropoff.toLowerCase().replace(/\s+/g, '-'));
     const type = isReturn ? '2' : '1';
 
-    navigate(`/transfer/${from}/${to}/${type}/${departureDate}/form`);
+    navigate(`/transfer/${from}/${to}/${type}/${formData.departureDate}/form`, {
+      state: { passengers }
+    });
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === 'pickup') {
+      setPickupValue(value);
+    } else if (name === 'dropoff') {
+      setDropoffValue(value);
+    }
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -111,9 +129,9 @@ const SearchForm = () => {
             <input
               type="text"
               placeholder="Pickup location"
+              name="pickup"
               value={pickupValue}
-              onChange={(e) => setPickupValue(e.target.value)}
-              disabled={!pickupReady}
+              onChange={handleInputChange}
               className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
             {pickupStatus === "OK" && (
@@ -137,9 +155,9 @@ const SearchForm = () => {
             <input
               type="text"
               placeholder="Dropoff location"
+              name="dropoff"
               value={dropoffValue}
-              onChange={(e) => setDropoffValue(e.target.value)}
-              disabled={!dropoffReady}
+              onChange={handleInputChange}
               className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
             {dropoffStatus === "OK" && (
@@ -161,8 +179,9 @@ const SearchForm = () => {
             <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
             <input
               type="date"
-              value={departureDate}
-              onChange={(e) => setDepartureDate(e.target.value)}
+              name="departureDate"
+              value={formData.departureDate}
+              onChange={(e) => setFormData(prev => ({ ...prev, departureDate: e.target.value }))}
               className="w-full pl-10 pr-4 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 appearance-none"
               style={{
                 colorScheme: 'light',

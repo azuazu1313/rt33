@@ -125,7 +125,6 @@ const Step1Vehicle = () => {
   };
 
   const handleRouteUpdate = (newRoute: { from: string; to: string; type: string; date: string; passengers: number }) => {
-    // Update the passengers state when route is updated
     setPassengers(newRoute.passengers);
   };
 
