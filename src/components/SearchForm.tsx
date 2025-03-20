@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Calendar, Users, ArrowRight, Minus, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 
 const SearchForm = () => {
+  const navigate = useNavigate();
   const [isReturn, setIsReturn] = useState(true);
   const [passengers, setPassengers] = useState(1);
   const [selectedPickup, setSelectedPickup] = useState('');
   const [selectedDropoff, setSelectedDropoff] = useState('');
+  const [departureDate, setDepartureDate] = useState('');
 
   const {
     ready: pickupReady,
@@ -64,6 +67,19 @@ const SearchForm = () => {
     } else if (!increment && passengers > 1) {
       setPassengers(passengers - 1);
     }
+  };
+
+  const handleSubmit = () => {
+    if (!selectedPickup || !selectedDropoff || !departureDate) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    const from = encodeURIComponent(selectedPickup.toLowerCase().replace(/\s+/g, '-'));
+    const to = encodeURIComponent(selectedDropoff.toLowerCase().replace(/\s+/g, '-'));
+    const type = isReturn ? '2' : '1';
+
+    navigate(`/transfer/${from}/${to}/${type}/${departureDate}/form`);
   };
 
   return (
@@ -145,6 +161,8 @@ const SearchForm = () => {
             <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
             <input
               type="date"
+              value={departureDate}
+              onChange={(e) => setDepartureDate(e.target.value)}
               className="w-full pl-10 pr-4 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 appearance-none"
               style={{
                 colorScheme: 'light',
@@ -200,14 +218,7 @@ const SearchForm = () => {
 
         <button 
           className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
-          onClick={() => {
-            console.log({
-              type: isReturn ? 'round-trip' : 'one-way',
-              pickup: selectedPickup,
-              dropoff: selectedDropoff,
-              passengers
-            });
-          }}
+          onClick={handleSubmit}
         >
           <span>See Prices</span>
           <ArrowRight className="h-5 w-5" />
