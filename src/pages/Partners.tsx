@@ -338,7 +338,7 @@ const Partners = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
                   <input
                     type="text"
                     name="name"
@@ -349,7 +349,7 @@ const Partners = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Surname</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
                   <input
                     type="text"
                     name="surname"
@@ -405,7 +405,7 @@ const Partners = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Website URL (optional)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Website (optional)</label>
                 <input
                   type="url"
                   name="website"
