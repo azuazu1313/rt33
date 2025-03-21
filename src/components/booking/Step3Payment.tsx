@@ -1,4 +1,4 @@
-import React, { useState } from  'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ChevronDown, CreditCard, Banknote, Tag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -6,7 +6,7 @@ import BookingLayout from '../../components/booking/BookingLayout';
 
 const Step3Payment = () => {
   const navigate = useNavigate();
-  const { from, to, type, date, returnDate } = useParams();
+  const { from,  to, type, date, returnDate, passengers } = useParams();
 
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'cash'>('card');
   const [showDiscount, setShowDiscount] = useState(false);

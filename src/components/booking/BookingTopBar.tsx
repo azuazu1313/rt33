@@ -163,24 +163,13 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
       passengers: updatedPassengers
     };
 
-    // If we're on step 1, use the callback
-    if (location.pathname.endsWith('/form') && onRouteUpdate) {
-      onRouteUpdate(newRoute);
-    } else {
-      // Extract the current step from the URL
-      const currentPath = location.pathname;
-      const step = currentPath.endsWith('/form') ? 'form' : 
-                   currentPath.endsWith('/details') ? 'details' :
-                   currentPath.endsWith('/payment') ? 'payment' : 'form';
-
-      // For any route changes, maintain the current step
-      const basePath = `/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}`;
-      const fullPath = updatedReturnDate
-        ? `${basePath}/${updatedReturnDate}/${updatedPassengers}/${step}`
-        : `${basePath}/${updatedPassengers}/${step}`;
-      
-      navigate(fullPath, { replace: true });
-    }
+    // Always navigate back to step 1 (form) when route is updated
+    const basePath = `/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}`;
+    const fullPath = updatedReturnDate
+      ? `${basePath}/${updatedReturnDate}/${updatedPassengers}/form`
+      : `${basePath}/${updatedPassengers}/form`;
+    
+    navigate(fullPath, { replace: true });
   };
 
   // Calculate grid columns based on type
