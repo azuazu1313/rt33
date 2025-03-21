@@ -167,11 +167,17 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
     if (location.pathname.endsWith('/form') && onRouteUpdate) {
       onRouteUpdate(newRoute);
     } else {
-      // For any route changes, navigate to step 1
+      // Extract the current step from the URL
+      const currentPath = location.pathname;
+      const step = currentPath.endsWith('/form') ? 'form' : 
+                   currentPath.endsWith('/details') ? 'details' :
+                   currentPath.endsWith('/payment') ? 'payment' : 'form';
+
+      // For any route changes, maintain the current step
       const basePath = `/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}`;
       const fullPath = updatedReturnDate
-        ? `${basePath}/${updatedReturnDate}/${updatedPassengers}/form`
-        : `${basePath}/${updatedPassengers}/form`;
+        ? `${basePath}/${updatedReturnDate}/${updatedPassengers}/${step}`
+        : `${basePath}/${updatedPassengers}/${step}`;
       
       navigate(fullPath, { replace: true });
     }
