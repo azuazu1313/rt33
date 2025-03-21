@@ -31,10 +31,10 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/rider-signup" element={<RiderSignup />} />
         
-        {/* Booking Flow Routes */}
-        <Route path="/transfer/:from/:to/:type/:date/form" element={<Step1Vehicle />} />
-        <Route path="/transfer/:from/:to/:type/:date/details" element={<Step2Details />} />
-        <Route path="/transfer/:from/:to/:type/:date/payment" element={<Step3Payment />} />
+        {/* Updated Booking Flow Routes with passenger parameter */}
+        <Route path="/transfer/:from/:to/:type/:date/:passengers/form" element={<Step1Vehicle />} />
+        <Route path="/transfer/:from/:to/:type/:date/:passengers/details" element={<Step2Details />} />
+        <Route path="/transfer/:from/:to/:type/:date/:passengers/payment" element={<Step3Payment />} />
       </Routes>
     </BrowserRouter>
   );

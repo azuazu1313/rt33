@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import BookingLayout from '../../components/booking/BookingLayout';
 import VehicleCard from '../../components/booking/VehicleCard';
 import VehicleModal from '../../components/booking/VehicleModal';
@@ -110,50 +110,21 @@ const vehicles = [
 
 const Step1Vehicle = () => {
   const navigate = useNavigate();
-  const { from, to, type, date } = useParams();
-  const location = useLocation();
+  const { from, to, type, date, passengers } = useParams();
   
-  // Initialize passengers from location state, URL params, or default to 1
-  const [passengers, setPassengers] = useState(() => {
-    // First check location state
-    if (location.state?.passengers) {
-      return location.state.passengers;
-    }
-    
-    // Then check URL search params
-    const searchParams = new URLSearchParams(location.search);
-    const urlPassengers = searchParams.get('passengers');
-    if (urlPassengers) {
-      return parseInt(urlPassengers, 10);
-    }
-    
-    // Default to 1 if no other value is found
-    return 1;
-  });
-
   const [selectedVehicle, setSelectedVehicle] = useState(vehicles[0]);
   const [modalVehicle, setModalVehicle] = useState<typeof vehicles[0] | null>(null);
 
   const handleNext = () => {
-    // Always include current passengers count in navigation
-    navigate(`/transfer/${from}/${to}/${type}/${date}/details`, {
-      state: { 
-        passengers,
-        selectedVehicleId: selectedVehicle.id
-      }
-    });
+    navigate(`/transfer/${from}/${to}/${type}/${date}/${passengers}/details`);
   };
 
   const handleRouteUpdate = (newRoute: { from: string; to: string; type: string; date: string; passengers: number }) => {
-    // Update local state
-    setPassengers(newRoute.passengers);
-    
-    // Update URL with new route and preserve passenger count
     const updatedFrom = encodeURIComponent(newRoute.from.toLowerCase().replace(/\s+/g, '-'));
     const updatedTo = encodeURIComponent(newRoute.to.toLowerCase().replace(/\s+/g, '-'));
     
-    navigate(`/transfer/${updatedFrom}/${updatedTo}/${newRoute.type}/${newRoute.date}/form?passengers=${newRoute.passengers}`, {
-      state: { passengers: newRoute.passengers }
+    navigate(`/transfer/${updatedFrom}/${updatedTo}/${newRoute.type}/${newRoute.date}/${newRoute.passengers}/form`, {
+      replace: true
     });
   };
 

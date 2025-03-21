@@ -2,26 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin, Users, Plus, Minus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
 interface BookingTopBarProps {
   from: string;
   to: string;
   type: 'one-way' | 'round-trip';
   date: string;
-  initialPassengers?: number;
   onRouteUpdate?: (newRoute: { from: string; to: string; type: string; date: string; passengers: number }) => void;
 }
 
-const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, initialPassengers = 1, onRouteUpdate }) => {
+const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onRouteUpdate }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { passengers: passengersParam } = useParams();
+  
   const [formData, setFormData] = useState({
     from,
     to,
     type,
     date,
-    passengers: initialPassengers
+    passengers: parseInt(passengersParam || '1', 10) || 1
   });
 
   // Reset form data when props change
@@ -31,9 +32,9 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ini
       to,
       type,
       date,
-      passengers: initialPassengers
+      passengers: parseInt(passengersParam || '1', 10) || 1
     });
-  }, [from, to, type, date, initialPassengers]);
+  }, [from, to, type, date, passengersParam]);
 
   const {
     ready: pickupReady,
@@ -103,7 +104,7 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ini
     formData.from !== from ||
     formData.to !== to ||
     formData.date !== date ||
-    formData.passengers !== initialPassengers;
+    formData.passengers !== parseInt(passengersParam || '1', 10);
 
   const handlePickupChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -129,23 +130,25 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ini
     const updatedTo = encodeURIComponent(formData.to.toLowerCase().replace(/\s+/g, '-'));
     const updatedType = type;
     const updatedDate = formData.date;
+    const updatedPassengers = formData.passengers;
 
     const newRoute = {
       from: formData.from,
       to: formData.to,
       type: updatedType,
       date: updatedDate,
-      passengers: formData.passengers
+      passengers: updatedPassengers
     };
 
     // If we're on step 1, use the callback
     if (location.pathname.endsWith('/form') && onRouteUpdate) {
       onRouteUpdate(newRoute);
     } else {
-      // For any route changes (including just passengers), navigate to step 1
-      navigate(`/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}/form`, { 
-        replace: true,
-        state: { passengers: formData.passengers }
+      // For any route changes, navigate to step 1 with updated URL including passengers
+      const currentPath = location.pathname;
+      const step = currentPath.split('/').pop(); // Get current step (form, details, or payment)
+      navigate(`/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}/${updatedPassengers}/${step}`, { 
+        replace: true
       });
     }
   };

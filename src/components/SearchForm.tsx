@@ -85,9 +85,8 @@ const SearchForm = () => {
     const to = encodeURIComponent(dropoff.toLowerCase().replace(/\s+/g, '-'));
     const type = isReturn ? '2' : '1';
 
-    navigate(`/transfer/${from}/${to}/${type}/${formData.departureDate}/form`, {
-      state: { passengers }
-    });
+    // Updated navigation to include passengers in URL
+    navigate(`/transfer/${from}/${to}/${type}/${formData.departureDate}/${passengers}/form`);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
