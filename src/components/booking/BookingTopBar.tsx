@@ -9,34 +9,52 @@ interface BookingTopBarProps {
   to: string;
   type: 'one-way' | 'round-trip';
   date: string;
-  onRouteUpdate?: (newRoute: { from: string; to: string; type: string; date: string; passengers: number }) => void;
+  onRouteUpdate?: (newRoute: { from: string; to: string; type: string; date: string; returnDate?: string; passengers: number }) => void;
 }
 
 const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onRouteUpdate }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { passengers: passengersParam } = useParams();
+  const { passengers: passengersParam, returnDate: returnDateParam } = useParams();
+
+  const parseDateFromUrl = (dateStr: string) => {
+    if (!dateStr || dateStr.length !== 6) return '';
+    const year = '20' + dateStr.slice(0, 2);
+    const month = dateStr.slice(2, 4);
+    const day = dateStr.slice(4, 6);
+    return `${year}-${month}-${day}`;
+  };
+
+  const formatDateForUrl = (dateStr: string) => {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    const year = date.getFullYear().toString().slice(-2);
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}${month}${day}`;
+  };
   
   const [formData, setFormData] = useState({
     from,
     to,
     type,
-    date,
-    returnDate: '',
+    date: parseDateFromUrl(date),
+    returnDate: returnDateParam ? parseDateFromUrl(returnDateParam) : '',
     passengers: parseInt(passengersParam || '1', 10) || 1
   });
 
   // Reset form data when props change
   useEffect(() => {
-    setFormData({
+    setFormData(prev => ({
+      ...prev,
       from,
       to,
       type,
-      date,
-      returnDate: '',
+      date: parseDateFromUrl(date),
+      returnDate: returnDateParam ? parseDateFromUrl(returnDateParam) : '',
       passengers: parseInt(passengersParam || '1', 10) || 1
-    });
-  }, [from, to, type, date, passengersParam]);
+    }));
+  }, [from, to, type, date, passengersParam, returnDateParam]);
 
   const {
     ready: pickupReady,
@@ -65,7 +83,7 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
   useEffect(() => {
     setPickupValue(from, false);
     setDropoffValue(to, false);
-  }, [from, to]);
+  }, [from, to, setPickupValue, setDropoffValue]);
 
   const handlePickupSelect = async (suggestion: google.maps.places.AutocompletePrediction) => {
     setPickupValue(suggestion.description, false);
@@ -105,7 +123,8 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
   const hasChanges = 
     formData.from !== from ||
     formData.to !== to ||
-    formData.date !== date ||
+    formData.date !== parseDateFromUrl(date) ||
+    (type === 'round-trip' && formData.returnDate !== (returnDateParam ? parseDateFromUrl(returnDateParam) : '')) ||
     formData.passengers !== parseInt(passengersParam || '1', 10);
 
   const handlePickupChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,8 +149,9 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
 
     const updatedFrom = encodeURIComponent(formData.from.toLowerCase().replace(/\s+/g, '-'));
     const updatedTo = encodeURIComponent(formData.to.toLowerCase().replace(/\s+/g, '-'));
-    const updatedType = type;
-    const updatedDate = formData.date;
+    const updatedType = type === 'round-trip' ? '2' : '1';
+    const updatedDate = formatDateForUrl(formData.date);
+    const updatedReturnDate = type === 'round-trip' && formData.returnDate ? formatDateForUrl(formData.returnDate) : '';
     const updatedPassengers = formData.passengers;
 
     const newRoute = {
@@ -139,6 +159,7 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
       to: formData.to,
       type: updatedType,
       date: updatedDate,
+      returnDate: updatedReturnDate,
       passengers: updatedPassengers
     };
 
@@ -147,9 +168,12 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
       onRouteUpdate(newRoute);
     } else {
       // For any route changes, navigate to step 1
-      navigate(`/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}/${updatedPassengers}/form`, { 
-        replace: true
-      });
+      const basePath = `/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}`;
+      const fullPath = updatedReturnDate
+        ? `${basePath}/${updatedReturnDate}/${updatedPassengers}/form`
+        : `${basePath}/${updatedPassengers}/form`;
+      
+      navigate(fullPath, { replace: true });
     }
   };
 

@@ -11,6 +11,7 @@ const SearchForm = () => {
     pickup: '',
     dropoff: '',
     departureDate: '',
+    returnDate: ''
   });
 
   const {
@@ -71,6 +72,15 @@ const SearchForm = () => {
     }
   };
 
+  const formatDateForUrl = (dateStr: string) => {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    const year = date.getFullYear().toString().slice(-2);
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}${month}${day}`;
+  };
+
   const handleSubmit = () => {
     // Allow direct input if Places API is not available
     const pickup = pickupValue || formData.pickup;
@@ -84,8 +94,13 @@ const SearchForm = () => {
     const from = encodeURIComponent(pickup.toLowerCase().replace(/\s+/g, '-'));
     const to = encodeURIComponent(dropoff.toLowerCase().replace(/\s+/g, '-'));
     const type = isReturn ? '2' : '1';
+    const departureDate = formatDateForUrl(formData.departureDate);
+    const returnDate = isReturn && formData.returnDate ? formatDateForUrl(formData.returnDate) : '';
+    const urlPath = returnDate 
+      ? `/transfer/${from}/${to}/${type}/${departureDate}/${returnDate}/${passengers}/form`
+      : `/transfer/${from}/${to}/${type}/${departureDate}/${passengers}/form`;
 
-    navigate(`/transfer/${from}/${to}/${type}/${formData.departureDate}/${passengers}/form`);
+    navigate(urlPath);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -195,6 +210,9 @@ const SearchForm = () => {
             <Calendar className={`absolute left-3 top-3 h-5 w-5 ${isReturn ? 'text-gray-400' : 'text-gray-300'}`} />
             <input
               type="date"
+              name="returnDate"
+              value={formData.returnDate}
+              onChange={(e) => setFormData(prev => ({ ...prev, returnDate: e.target.value }))}
               disabled={!isReturn}
               className={`w-full pl-10 pr-4 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 appearance-none ${
                 !isReturn ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : ''
