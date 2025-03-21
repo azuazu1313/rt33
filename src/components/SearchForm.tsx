@@ -36,6 +36,15 @@ const SearchForm = () => {
     debounce: 300,
   });
 
+  const formatDateForUrl = (dateStr: string) => {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    const year = date.getFullYear().toString().slice(-2);
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}${month}${day}`;
+  };
+
   const handlePickupSelect = async (suggestion: google.maps.places.AutocompletePrediction) => {
     setPickupValue(suggestion.description, false);
     clearPickupSuggestions();
@@ -90,12 +99,15 @@ const SearchForm = () => {
     const encodedDropoff = encodeURIComponent(dropoff.toLowerCase().replace(/\s+/g, '-'));
     const type = isReturn ? '2' : '1';
     
-    let path = `/transfer/${encodedPickup}/${encodedDropoff}/${type}/${formData.departureDate}`;
+    const formattedDepartureDate = formatDateForUrl(formData.departureDate);
+    let path = `/transfer/${encodedPickup}/${encodedDropoff}/${type}/${formattedDepartureDate}`;
+    
     if (isReturn && formData.returnDate) {
-      path += `/${formData.returnDate}`;
+      const formattedReturnDate = formatDateForUrl(formData.returnDate);
+      path += `/${formattedReturnDate}`;
     }
+    
     path += `/${passengers}/form`;
-
     navigate(path);
   };
 

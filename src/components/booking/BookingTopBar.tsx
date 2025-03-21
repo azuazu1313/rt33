@@ -9,17 +9,17 @@ interface BookingTopBarProps {
   to: string;
   type: 'one-way' | 'round-trip';
   date: string;
-  onRouteUpdate?: (newRoute: { from: string; to: string; type: string; date: string; returnDate?: string; passengers: number }) => void;
+  returnDate?: string;
 }
 
-const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date }) => {
+const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, returnDate }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     from,
     to,
     type,
     date: date || '',
-    returnDate: '',
+    returnDate: returnDate || '',
     passengers: 1
   });
 
@@ -46,6 +46,23 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date }) =
     debounce: 300,
     defaultValue: to
   });
+
+  const formatDateForUrl = (dateStr: string) => {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    const year = date.getFullYear().toString().slice(-2);
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}${month}${day}`;
+  };
+
+  const formatDateForInput = (dateStr: string) => {
+    if (!dateStr || dateStr.length !== 6) return '';
+    const year = '20' + dateStr.slice(0, 2);
+    const month = dateStr.slice(2, 4);
+    const day = dateStr.slice(4, 6);
+    return `${year}-${month}-${day}`;
+  };
 
   const handlePickupSelect = async (suggestion: google.maps.places.AutocompletePrediction) => {
     setPickupValue(suggestion.description, false);
@@ -104,14 +121,26 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date }) =
     const encodedTo = encodeURIComponent(formData.to.toLowerCase().replace(/\s+/g, '-'));
     const tripType = formData.type === 'round-trip' ? '2' : '1';
     
-    let path = `/transfer/${encodedFrom}/${encodedTo}/${tripType}/${formData.date}`;
+    const formattedDepartureDate = formatDateForUrl(formData.date);
+    let path = `/transfer/${encodedFrom}/${encodedTo}/${tripType}/${formattedDepartureDate}`;
+    
     if (formData.type === 'round-trip' && formData.returnDate) {
-      path += `/${formData.returnDate}`;
+      const formattedReturnDate = formatDateForUrl(formData.returnDate);
+      path += `/${formattedReturnDate}`;
     }
+    
     path += `/${formData.passengers}/form`;
-
     navigate(path);
   };
+
+  // Initialize form data with formatted dates
+  React.useEffect(() => {
+    setFormData(prev => ({
+      ...prev,
+      date: formatDateForInput(date),
+      returnDate: returnDate ? formatDateForInput(returnDate) : ''
+    }));
+  }, [date, returnDate]);
 
   return (
     <div className="py-4 px-4 sm:px-6 lg:px-8">
