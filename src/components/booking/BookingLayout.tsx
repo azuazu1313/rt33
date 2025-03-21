@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import Header from '../Header';
 import Sitemap from '../Sitemap';
@@ -27,11 +27,22 @@ const BookingLayout: React.FC<BookingLayoutProps> = ({
   showNewsletter = true
 }) => {
   const navigate = useNavigate();
-  const { from, to, type, date } = useParams();
+  const { from, to, type, date, returnDate, passengers } = useParams();
 
   const handleBack = () => {
     if (onBack) {
       onBack();
+    } else if (currentStep === 1) {
+      // If we're on step 1, navigate back to home with search params
+      const searchParams = new URLSearchParams({
+        from: decodeURIComponent(from || ''),
+        to: decodeURIComponent(to || ''),
+        type: type || '2',
+        date: date || '',
+        ...(returnDate && { returnDate }),
+        passengers: passengers || '1'
+      });
+      navigate(`/?${searchParams.toString()}`, { replace: true });
     } else {
       navigate(-1);
     }
@@ -53,6 +64,8 @@ const BookingLayout: React.FC<BookingLayoutProps> = ({
                   to={decodeURIComponent(to || '')}
                   type={type === '2' ? 'round-trip' : 'one-way'}
                   date={date || ''}
+                  returnDate={returnDate}
+                  currentStep={currentStep}
                 />
               </div>
             </div>

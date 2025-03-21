@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin, Users, Plus, Minus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface BookingTopBarProps {
   from: string;
@@ -10,10 +10,12 @@ interface BookingTopBarProps {
   type: 'one-way' | 'round-trip';
   date: string;
   returnDate?: string;
+  currentStep?: number;
 }
 
-const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, returnDate }) => {
+const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, returnDate, currentStep = 1 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     from,
     to,
@@ -22,6 +24,9 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ret
     returnDate: returnDate || '',
     passengers: 1
   });
+
+  const [hasChanges, setHasChanges] = useState(false);
+  const [initialFormData, setInitialFormData] = useState(formData);
 
   const {
     ready: pickupReady,
@@ -46,6 +51,34 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ret
     debounce: 300,
     defaultValue: to
   });
+
+  // Initialize values
+  useEffect(() => {
+    setFormData({
+      from,
+      to,
+      type,
+      date,
+      returnDate: returnDate || '',
+      passengers: 1
+    });
+    setInitialFormData({
+      from,
+      to,
+      type,
+      date,
+      returnDate: returnDate || '',
+      passengers: 1
+    });
+    setPickupValue(from, false);
+    setDropoffValue(to, false);
+  }, [from, to, type, date, returnDate]);
+
+  // Check for changes
+  useEffect(() => {
+    const hasFormChanges = JSON.stringify(formData) !== JSON.stringify(initialFormData);
+    setHasChanges(hasFormChanges);
+  }, [formData, initialFormData]);
 
   const formatDateForUrl = (dateStr: string) => {
     if (!dateStr) return '';
@@ -117,6 +150,8 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ret
   };
 
   const handleUpdateRoute = () => {
+    if (!hasChanges) return;
+
     const encodedFrom = encodeURIComponent(formData.from.toLowerCase().replace(/\s+/g, '-'));
     const encodedTo = encodeURIComponent(formData.to.toLowerCase().replace(/\s+/g, '-'));
     const tripType = formData.type === 'round-trip' ? '2' : '1';
@@ -130,7 +165,18 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ret
     }
     
     path += `/${formData.passengers}/form`;
-    navigate(path);
+
+    // If we're not on step 1, navigate to step 1 with new route
+    if (currentStep && currentStep > 1) {
+      navigate(path);
+    } else {
+      // Just update the current route
+      navigate(path, { replace: true });
+    }
+
+    // Reset changes tracking
+    setInitialFormData(formData);
+    setHasChanges(false);
   };
 
   // Initialize form data with formatted dates
@@ -265,9 +311,14 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ret
           </div>
 
           <motion.button
-            whileTap={{ scale: 0.95 }}
+            whileTap={{ scale: hasChanges ? 0.95 : 1 }}
             onClick={handleUpdateRoute}
-            className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 min-w-[120px]"
+            className={`px-6 py-2 rounded-lg transition-all duration-300 min-w-[120px] ${
+              hasChanges 
+                ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+            }`}
+            disabled={!hasChanges}
           >
             Update Route
           </motion.button>

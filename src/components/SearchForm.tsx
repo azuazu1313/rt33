@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, Calendar, Users, ArrowRight, Minus, Plus } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
+
+// Helper function to parse date from URL format
+const parseDateFromUrl = (dateStr: string) => {
+  if (!dateStr || dateStr.length !== 6) return '';
+  const year = '20' + dateStr.slice(0, 2);
+  const month = dateStr.slice(2, 4);
+  const day = dateStr.slice(4, 6);
+  return `${year}-${month}-${day}`;
+};
 
 const SearchForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isReturn, setIsReturn] = useState(true);
   const [passengers, setPassengers] = useState(1);
   const [formData, setFormData] = useState({
@@ -13,6 +23,30 @@ const SearchForm = () => {
     departureDate: '',
     returnDate: ''
   });
+
+  // Initialize form data from URL if coming from booking flow
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.has('from')) {
+      const from = params.get('from') || '';
+      const to = params.get('to') || '';
+      const type = params.get('type') || '2';
+      const date = params.get('date') || '';
+      const returnDate = params.get('returnDate') || '';
+      const passengersCount = parseInt(params.get('passengers') || '1', 10);
+
+      setIsReturn(type === '2');
+      setPassengers(passengersCount);
+      setFormData({
+        pickup: decodeURIComponent(from.replace(/-/g, ' ')),
+        dropoff: decodeURIComponent(to.replace(/-/g, ' ')),
+        departureDate: parseDateFromUrl(date),
+        returnDate: returnDate ? parseDateFromUrl(returnDate) : ''
+      });
+      setPickupValue(decodeURIComponent(from.replace(/-/g, ' ')), false);
+      setDropoffValue(decodeURIComponent(to.replace(/-/g, ' ')), false);
+    }
+  }, [location]);
 
   const {
     ready: pickupReady,
