@@ -64,7 +64,7 @@ const SearchForm = () => {
   };
 
   const handlePassengerChange = (increment: boolean) => {
-    if (increment && passengers < 8) {
+    if (increment && passengers < 100) {
       setPassengers(passengers + 1);
     } else if (!increment && passengers > 1) {
       setPassengers(passengers - 1);
@@ -85,7 +85,6 @@ const SearchForm = () => {
     const to = encodeURIComponent(dropoff.toLowerCase().replace(/\s+/g, '-'));
     const type = isReturn ? '2' : '1';
 
-    // Updated navigation to include passengers in URL
     navigate(`/transfer/${from}/${to}/${type}/${formData.departureDate}/${passengers}/form`);
   };
 
@@ -174,6 +173,7 @@ const SearchForm = () => {
             )}
           </div>
 
+          {/* Departure Date */}
           <div className="relative">
             <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
             <input
@@ -190,6 +190,7 @@ const SearchForm = () => {
             />
           </div>
 
+          {/* Return Date */}
           <div className="relative">
             <Calendar className={`absolute left-3 top-3 h-5 w-5 ${isReturn ? 'text-gray-400' : 'text-gray-300'}`} />
             <input
@@ -206,6 +207,7 @@ const SearchForm = () => {
             />
           </div>
 
+          {/* Passengers */}
           <div className="relative flex items-center">
             <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
             <div className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md flex justify-between items-center">
@@ -223,9 +225,9 @@ const SearchForm = () => {
                 <button
                   onClick={() => handlePassengerChange(true)}
                   className={`p-1 rounded-full transition-colors ${
-                    passengers < 8 ? 'text-blue-600 hover:bg-blue-50 active:bg-blue-100' : 'text-gray-300'
+                    passengers < 100 ? 'text-blue-600 hover:bg-blue-50 active:bg-blue-100' : 'text-gray-300'
                   }`}
-                  disabled={passengers >= 8}
+                  disabled={passengers >= 100}
                 >
                   <Plus className="h-4 w-4" />
                 </button>

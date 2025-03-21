@@ -97,7 +97,7 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
 
   const handlePassengerChange = (increment: boolean) => {
     const newPassengers = increment ? formData.passengers + 1 : formData.passengers - 1;
-    if (newPassengers >= 1 && newPassengers <= 8) {
+    if (newPassengers >= 1 && newPassengers <= 100) {
       setFormData(prev => ({ ...prev, passengers: newPassengers }));
     }
   };
@@ -267,9 +267,9 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
                   <button
                     onClick={() => handlePassengerChange(true)}
                     className={`p-1 rounded-full transition-colors ${
-                      formData.passengers < 8 ? 'text-blue-600 hover:bg-blue-50 active:bg-blue-100' : 'text-gray-300'
+                      formData.passengers < 100 ? 'text-blue-600 hover:bg-blue-50 active:bg-blue-100' : 'text-gray-300'
                     }`}
-                    disabled={formData.passengers >= 8}
+                    disabled={formData.passengers >= 100}
                   >
                     <Plus className="h-4 w-4" />
                   </button>
