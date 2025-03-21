@@ -21,7 +21,7 @@ const extras: Extra[] = [
 
 const Step2Details = () => {
   const navigate = useNavigate();
-  const { from, to, type, date } = useParams();
+  const { from, to, type, date, passengers } = useParams();
 
   const [formData, setFormData] = useState({
     title: 'mr',
@@ -58,7 +58,7 @@ const Step2Details = () => {
   };
 
   const handleNext = () => {
-    navigate(`/transfer/${from}/${to}/${type}/${date}/payment`);
+    navigate(`/transfer/${from}/${to}/${type}/${date}/${passengers}/payment`);
   };
 
   return (

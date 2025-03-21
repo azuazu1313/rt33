@@ -22,6 +22,7 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
     to,
     type,
     date,
+    returnDate: '',
     passengers: parseInt(passengersParam || '1', 10) || 1
   });
 
@@ -32,6 +33,7 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
       to,
       type,
       date,
+      returnDate: '',
       passengers: parseInt(passengersParam || '1', 10) || 1
     });
   }, [from, to, type, date, passengersParam]);
@@ -119,8 +121,8 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setFormData(prev => ({ ...prev, date: value }));
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleUpdateRoute = () => {
@@ -144,20 +146,21 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
     if (location.pathname.endsWith('/form') && onRouteUpdate) {
       onRouteUpdate(newRoute);
     } else {
-      // For any route changes, navigate to step 1 with updated URL including passengers
-      const currentPath = location.pathname;
-      const step = currentPath.split('/').pop(); // Get current step (form, details, or payment)
-      navigate(`/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}/${updatedPassengers}/${step}`, { 
+      // For any route changes, navigate to step 1
+      navigate(`/transfer/${updatedFrom}/${updatedTo}/${updatedType}/${updatedDate}/${updatedPassengers}/form`, { 
         replace: true
       });
     }
   };
 
+  // Calculate grid columns based on type
+  const gridCols = type === 'round-trip' ? 'grid-cols-1 md:grid-cols-5' : 'grid-cols-1 md:grid-cols-4';
+
   return (
     <div className="py-4 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-          <div className="flex-1 w-full md:w-auto grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className={`flex-1 w-full md:w-auto grid ${gridCols} gap-4`}>
             {/* From Location */}
             <div className="relative">
               <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
@@ -210,11 +213,12 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
               )}
             </div>
 
-            {/* Date */}
+            {/* Departure Date */}
             <div className="relative">
               <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
               <input
                 type="date"
+                name="date"
                 value={formData.date}
                 onChange={handleDateChange}
                 className="w-full h-[42px] pl-10 pr-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 bg-white disabled:bg-gray-50 disabled:opacity-75"
@@ -225,6 +229,25 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
                 }}
               />
             </div>
+
+            {/* Return Date - Only shown for round trips */}
+            {type === 'round-trip' && (
+              <div className="relative">
+                <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <input
+                  type="date"
+                  name="returnDate"
+                  value={formData.returnDate}
+                  onChange={handleDateChange}
+                  className="w-full h-[42px] pl-10 pr-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 bg-white"
+                  style={{
+                    colorScheme: 'light',
+                    WebkitAppearance: 'none',
+                    MozAppearance: 'none'
+                  }}
+                />
+              </div>
+            )}
 
             {/* Passengers */}
             <div className="relative">
