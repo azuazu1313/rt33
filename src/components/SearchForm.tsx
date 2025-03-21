@@ -81,7 +81,22 @@ const SearchForm = () => {
       return;
     }
 
-    navigate('/booking-flow');
+    if (isReturn && !formData.returnDate) {
+      alert('Please select a return date for round trips');
+      return;
+    }
+
+    const encodedPickup = encodeURIComponent(pickup.toLowerCase().replace(/\s+/g, '-'));
+    const encodedDropoff = encodeURIComponent(dropoff.toLowerCase().replace(/\s+/g, '-'));
+    const type = isReturn ? '2' : '1';
+    
+    let path = `/transfer/${encodedPickup}/${encodedDropoff}/${type}/${formData.departureDate}`;
+    if (isReturn && formData.returnDate) {
+      path += `/${formData.returnDate}`;
+    }
+    path += `/${passengers}/form`;
+
+    navigate(path);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

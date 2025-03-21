@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Calendar, MapPin, Users, Plus, Minus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
+import { useNavigate } from 'react-router-dom';
 
 interface BookingTopBarProps {
   from: string;
@@ -11,7 +12,8 @@ interface BookingTopBarProps {
   onRouteUpdate?: (newRoute: { from: string; to: string; type: string; date: string; returnDate?: string; passengers: number }) => void;
 }
 
-const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onRouteUpdate }) => {
+const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     from,
     to,
@@ -98,9 +100,17 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, onR
   };
 
   const handleUpdateRoute = () => {
-    if (onRouteUpdate) {
-      onRouteUpdate(formData);
+    const encodedFrom = encodeURIComponent(formData.from.toLowerCase().replace(/\s+/g, '-'));
+    const encodedTo = encodeURIComponent(formData.to.toLowerCase().replace(/\s+/g, '-'));
+    const tripType = formData.type === 'round-trip' ? '2' : '1';
+    
+    let path = `/transfer/${encodedFrom}/${encodedTo}/${tripType}/${formData.date}`;
+    if (formData.type === 'round-trip' && formData.returnDate) {
+      path += `/${formData.returnDate}`;
     }
+    path += `/${formData.passengers}/form`;
+
+    navigate(path);
   };
 
   return (
