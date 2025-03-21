@@ -27,6 +27,7 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ret
 
   const [hasChanges, setHasChanges] = useState(false);
   const [initialFormData, setInitialFormData] = useState(formData);
+  const [savedFormData, setSavedFormData] = useState(formData);
 
   const {
     ready: pickupReady,
@@ -54,31 +55,33 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ret
 
   // Initialize values
   useEffect(() => {
-    setFormData({
+    const initialData = {
       from,
       to,
       type,
       date,
       returnDate: returnDate || '',
       passengers: 1
-    });
-    setInitialFormData({
-      from,
-      to,
-      type,
-      date,
-      returnDate: returnDate || '',
-      passengers: 1
-    });
+    };
+    setFormData(initialData);
+    setInitialFormData(initialData);
+    setSavedFormData(initialData);
     setPickupValue(from, false);
     setDropoffValue(to, false);
   }, [from, to, type, date, returnDate]);
 
-  // Check for changes
+  // Check for changes against saved data
   useEffect(() => {
-    const hasFormChanges = JSON.stringify(formData) !== JSON.stringify(initialFormData);
+    const hasFormChanges = JSON.stringify(formData) !== JSON.stringify(savedFormData);
     setHasChanges(hasFormChanges);
-  }, [formData, initialFormData]);
+  }, [formData, savedFormData]);
+
+  // Reset to saved data when changing steps without saving
+  useEffect(() => {
+    setFormData(savedFormData);
+    setPickupValue(savedFormData.from, false);
+    setDropoffValue(savedFormData.to, false);
+  }, [currentStep]);
 
   const formatDateForUrl = (dateStr: string) => {
     if (!dateStr) return '';
@@ -174,8 +177,8 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ret
       navigate(path, { replace: true });
     }
 
-    // Reset changes tracking
-    setInitialFormData(formData);
+    // Save the current form data as the new saved state
+    setSavedFormData(formData);
     setHasChanges(false);
   };
 
