@@ -11,9 +11,7 @@ import Contact from './pages/Contact';
 import RiderSignup from './pages/RiderSignup';
 import Blogs from './pages/Blogs';
 import BlogsDestinations from './pages/BlogsDestinations';
-import Step1Vehicle from './pages/booking/Step1Vehicle';
-import Step2Details from './pages/booking/Step2Details';
-import Step3Payment from './pages/booking/Step3Payment';
+import BookingFlow from './pages/BookingFlow';
 
 function App() {
   return (
@@ -31,13 +29,9 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/rider-signup" element={<RiderSignup />} />
         
-        {/* Updated Booking Flow Routes with return date parameter */}
-        <Route path="/transfer/:from/:to/:type/:date/:passengers/form" element={<Step1Vehicle />} />
-        <Route path="/transfer/:from/:to/:type/:date/:returnDate/:passengers/form" element={<Step1Vehicle />} />
-        <Route path="/transfer/:from/:to/:type/:date/:passengers/details" element={<Step2Details />} />
-        <Route path="/transfer/:from/:to/:type/:date/:returnDate/:passengers/details" element={<Step2Details />} />
-        <Route path="/transfer/:from/:to/:type/:date/:passengers/payment" element={<Step3Payment />} />
-        <Route path="/transfer/:from/:to/:type/:date/:returnDate/:passengers/payment" element={<Step3Payment />} />
+        {/* Consolidated Booking Flow Route */}
+        <Route path="/transfer/:from/:to/:type/:date/:passengers/form" element={<BookingFlow />} />
+        <Route path="/transfer/:from/:to/:type/:date/:returnDate/:passengers/form" element={<BookingFlow />} />
       </Routes>
     </BrowserRouter>
   );
