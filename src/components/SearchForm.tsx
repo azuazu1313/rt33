@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MapPin, Calendar, Users, ArrowRight, Minus, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
@@ -72,17 +72,7 @@ const SearchForm = () => {
     }
   };
 
-  const formatDateForUrl = (dateStr: string) => {
-    if (!dateStr) return '';
-    const date = new Date(dateStr);
-    const year = date.getFullYear().toString().slice(-2);
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}${month}${day}`;
-  };
-
   const handleSubmit = () => {
-    // Allow direct input if Places API is not available
     const pickup = pickupValue || formData.pickup;
     const dropoff = dropoffValue || formData.dropoff;
     
@@ -91,16 +81,7 @@ const SearchForm = () => {
       return;
     }
 
-    const from = encodeURIComponent(pickup.toLowerCase().replace(/\s+/g, '-'));
-    const to = encodeURIComponent(dropoff.toLowerCase().replace(/\s+/g, '-'));
-    const type = isReturn ? '2' : '1';
-    const departureDate = formatDateForUrl(formData.departureDate);
-    const returnDate = isReturn && formData.returnDate ? formatDateForUrl(formData.returnDate) : '';
-    const urlPath = returnDate 
-      ? `/transfer/${from}/${to}/${type}/${departureDate}/${returnDate}/${passengers}/form`
-      : `/transfer/${from}/${to}/${type}/${departureDate}/${passengers}/form`;
-
-    navigate(urlPath);
+    navigate('/booking-flow');
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

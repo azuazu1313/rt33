@@ -28,10 +28,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/rider-signup" element={<RiderSignup />} />
-        
-        {/* Consolidated Booking Flow Route */}
-        <Route path="/transfer/:from/:to/:type/:date/:passengers/form" element={<BookingFlow />} />
-        <Route path="/transfer/:from/:to/:type/:date/:returnDate/:passengers/form" element={<BookingFlow />} />
+        <Route path="/booking-flow" element={<BookingFlow />} />
       </Routes>
     </BrowserRouter>
   );
