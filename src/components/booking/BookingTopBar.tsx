@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin, Users, Plus, Minus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface BookingTopBarProps {
   from: string;
@@ -41,19 +41,48 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({
   currentStep = 1 
 }) => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [formData, setFormData] = useState({
     from,
     to,
     type,
     date: formatDateForInput(date),
-    returnDate: returnDate ? formatDateForInput(returnDate) : '',
+    returnDate: returnDate && returnDate !== '0' ? formatDateForInput(returnDate) : '',
     passengers: parseInt(passengers || '1', 10)
   });
 
   const [hasChanges, setHasChanges] = useState(false);
   const [initialFormData, setInitialFormData] = useState(formData);
   const [savedFormData, setSavedFormData] = useState(formData);
+
+  // Initialize values
+  useEffect(() => {
+    const initialData = {
+      from,
+      to,
+      type,
+      date: formatDateForInput(date),
+      returnDate: returnDate && returnDate !== '0' ? formatDateForInput(returnDate) : '',
+      passengers: parseInt(passengers || '1', 10)
+    };
+    setFormData(initialData);
+    setInitialFormData(initialData);
+    setSavedFormData(initialData);
+    setPickupValue(from, false);
+    setDropoffValue(to, false);
+  }, [from, to, type, date, returnDate, passengers]);
+
+  // Check for changes against saved data
+  useEffect(() => {
+    const hasFormChanges = JSON.stringify(formData) !== JSON.stringify(savedFormData);
+    setHasChanges(hasFormChanges);
+  }, [formData, savedFormData]);
+
+  // Reset to saved data when changing steps without saving
+  useEffect(() => {
+    setFormData(savedFormData);
+    setPickupValue(savedFormData.from, false);
+    setDropoffValue(savedFormData.to, false);
+  }, [currentStep]);
 
   const {
     ready: pickupReady,
@@ -78,36 +107,6 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({
     debounce: 300,
     defaultValue: to
   });
-
-  // Initialize values
-  useEffect(() => {
-    const initialData = {
-      from,
-      to,
-      type,
-      date: formatDateForInput(date),
-      returnDate: returnDate ? formatDateForInput(returnDate) : '',
-      passengers: parseInt(passengers || '1', 10)
-    };
-    setFormData(initialData);
-    setInitialFormData(initialData);
-    setSavedFormData(initialData);
-    setPickupValue(from, false);
-    setDropoffValue(to, false);
-  }, [from, to, type, date, returnDate, passengers]);
-
-  // Check for changes against saved data
-  useEffect(() => {
-    const hasFormChanges = JSON.stringify(formData) !== JSON.stringify(savedFormData);
-    setHasChanges(hasFormChanges);
-  }, [formData, savedFormData]);
-
-  // Reset to saved data when changing steps without saving
-  useEffect(() => {
-    setFormData(savedFormData);
-    setPickupValue(savedFormData.from, false);
-    setDropoffValue(savedFormData.to, false);
-  }, [currentStep]);
 
   const handlePickupSelect = async (suggestion: google.maps.places.AutocompletePrediction) => {
     setPickupValue(suggestion.description, false);
@@ -171,12 +170,12 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({
     const formattedDepartureDate = formatDateForUrl(formData.date);
     let path = `/transfer/${encodedFrom}/${encodedTo}/${tripType}/${formattedDepartureDate}`;
     
-    if (formData.type === 'round-trip' && formData.returnDate) {
-      const formattedReturnDate = formatDateForUrl(formData.returnDate);
-      path += `/${formattedReturnDate}`;
-    }
+    // Always include returnDate parameter (use '0' for one-way trips)
+    const returnDateParam = formData.type === 'round-trip' && formData.returnDate 
+      ? formatDateForUrl(formData.returnDate)
+      : '0';
     
-    path += `/${formData.passengers}/form`;
+    path += `/${returnDateParam}/${formData.passengers}/form`;
 
     // If we're not on step 1, navigate to step 1 with new route
     if (currentStep && currentStep > 1) {

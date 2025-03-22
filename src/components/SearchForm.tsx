@@ -44,7 +44,7 @@ const SearchForm = () => {
       const passengersCount = parseInt(params.get('passengers') || '1', 10);
 
       setIsReturn(type === '2');
-      setPassengers(passengersCount);
+      setPassengers(Math.max(1, passengersCount));
       setFormData({
         pickup: decodeURIComponent(from.replace(/-/g, ' ')),
         dropoff: decodeURIComponent(to.replace(/-/g, ' ')),
@@ -107,11 +107,7 @@ const SearchForm = () => {
   };
 
   const handlePassengerChange = (increment: boolean) => {
-    if (increment && passengers < 100) {
-      setPassengers(passengers + 1);
-    } else if (!increment && passengers > 1) {
-      setPassengers(passengers - 1);
-    }
+    setPassengers(prev => Math.max(1, Math.min(100, increment ? prev + 1 : prev - 1)));
   };
 
   const handleSubmit = () => {
@@ -135,12 +131,12 @@ const SearchForm = () => {
     
     let path = `/transfer/${encodedPickup}/${encodedDropoff}/${type}/${formattedDepartureDate}`;
     
-    if (isReturn && formData.returnDate) {
-      const formattedReturnDate = formatDateForUrl(formData.returnDate);
-      path += `/${formattedReturnDate}/${passengers}/form`;
-    } else {
-      path += `/${passengers}/form`;
-    }
+    // Always include returnDate parameter (use '0' for one-way trips)
+    const returnDateParam = isReturn && formData.returnDate 
+      ? formatDateForUrl(formData.returnDate)
+      : '0';
+    
+    path += `/${returnDateParam}/${passengers}/form`;
     
     navigate(path);
   };

@@ -29,9 +29,11 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/rider-signup" element={<RiderSignup />} />
         
-        {/* Single Booking Flow Route */}
-        <Route path="/transfer/:from/:to/:type/:date/:passengers/form" element={<BookingFlow />} />
-        <Route path="/transfer/:from/:to/:type/:date/:returnDate/:passengers/form" element={<BookingFlow />} />
+        {/* Single Booking Flow Route with consistent parameter structure */}
+        <Route 
+          path="/transfer/:from/:to/:type/:date/:returnDate/:passengers/form" 
+          element={<BookingFlow />} 
+        />
       </Routes>
     </BrowserRouter>
   );
