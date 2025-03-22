@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Calendar, Users, ArrowRight, Minus, Plus } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 
 const formatDateForUrl = (dateStr: string) => {
@@ -23,6 +23,7 @@ const parseDateFromUrl = (dateStr: string) => {
 const SearchForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const params = useParams();
   const [isReturn, setIsReturn] = useState(true);
   const [passengers, setPassengers] = useState(1);
   const [formData, setFormData] = useState({
@@ -34,27 +35,24 @@ const SearchForm = () => {
 
   // Initialize form data from URL if coming from booking flow
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.has('from')) {
-      const from = params.get('from') || '';
-      const to = params.get('to') || '';
-      const type = params.get('type') || '2';
-      const date = params.get('date') || '';
-      const returnDate = params.get('returnDate') || '';
-      const passengersCount = parseInt(params.get('passengers') || '1', 10);
-
-      setIsReturn(type === '2');
-      setPassengers(Math.max(1, passengersCount));
-      setFormData({
-        pickup: decodeURIComponent(from.replace(/-/g, ' ')),
-        dropoff: decodeURIComponent(to.replace(/-/g, ' ')),
-        departureDate: parseDateFromUrl(date),
-        returnDate: returnDate ? parseDateFromUrl(returnDate) : ''
-      });
-      setPickupValue(decodeURIComponent(from.replace(/-/g, ' ')), false);
-      setDropoffValue(decodeURIComponent(to.replace(/-/g, ' ')), false);
+    // Check if we're on the pre-filled home route
+    if (location.pathname.startsWith('/home/transfer/')) {
+      const { from, to, type, date, returnDate, passengers: passengerCount } = params;
+      
+      if (from && to && type && date) {
+        setIsReturn(type === '2');
+        setPassengers(Math.max(1, parseInt(passengerCount || '1', 10)));
+        setFormData({
+          pickup: decodeURIComponent(from.replace(/-/g, ' ')),
+          dropoff: decodeURIComponent(to.replace(/-/g, ' ')),
+          departureDate: parseDateFromUrl(date),
+          returnDate: returnDate && returnDate !== '0' ? parseDateFromUrl(returnDate) : ''
+        });
+        setPickupValue(decodeURIComponent(from.replace(/-/g, ' ')), false);
+        setDropoffValue(decodeURIComponent(to.replace(/-/g, ' ')), false);
+      }
     }
-  }, [location]);
+  }, [location.pathname, params]);
 
   const {
     ready: pickupReady,
@@ -212,7 +210,8 @@ const SearchForm = () => {
               className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
             {dropoffStatus === "OK" && (
-              <ul className="absolute z-10 w-full bg-white mt-1 rounded-md shadow-lg max-h-60 overflow-auto">
+              <ul className="absolute z-10 w-full bg-white mt-1 rounded-m
+d shadow-lg max-h-60 overflow-auto">
                 {dropoffSuggestions.map((suggestion) => (
                   <li
                     key={suggestion.place_id}

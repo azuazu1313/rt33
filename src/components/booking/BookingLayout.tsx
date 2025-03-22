@@ -33,16 +33,8 @@ const BookingLayout: React.FC<BookingLayoutProps> = ({
     if (onBack) {
       onBack();
     } else if (currentStep === 1) {
-      // If we're on step 1, navigate back to home with search params
-      const searchParams = new URLSearchParams({
-        from: decodeURIComponent(from || ''),
-        to: decodeURIComponent(to || ''),
-        type: type || '2',
-        date: date || '',
-        ...(returnDate && { returnDate }),
-        passengers: passengers || '1'
-      });
-      navigate(`/?${searchParams.toString()}`, { replace: true });
+      // Navigate to home with preserved parameters
+      navigate(`/home/transfer/${from}/${to}/${type}/${date}/${returnDate}/${passengers}/form`);
     } else {
       navigate(-1);
     }
@@ -65,6 +57,7 @@ const BookingLayout: React.FC<BookingLayoutProps> = ({
                   type={type === '2' ? 'round-trip' : 'one-way'}
                   date={date || ''}
                   returnDate={returnDate}
+                  passengers={passengers || '1'}
                   currentStep={currentStep}
                 />
               </div>

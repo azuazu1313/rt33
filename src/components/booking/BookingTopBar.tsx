@@ -47,7 +47,7 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({
     type,
     date: formatDateForInput(date),
     returnDate: returnDate && returnDate !== '0' ? formatDateForInput(returnDate) : '',
-    passengers: parseInt(passengers || '1', 10)
+    passengers: parseInt(passengers, 10)
   });
 
   const [hasChanges, setHasChanges] = useState(false);
@@ -62,7 +62,7 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({
       type,
       date: formatDateForInput(date),
       returnDate: returnDate && returnDate !== '0' ? formatDateForInput(returnDate) : '',
-      passengers: parseInt(passengers || '1', 10)
+      passengers: parseInt(passengers, 10)
     };
     setFormData(initialData);
     setInitialFormData(initialData);
@@ -283,11 +283,14 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({
               </div>
             )}
 
-            {/* Passengers */}
+            {/* Passengers - Always show URL value unless there are pending changes */}
             <div className="relative">
               <Users className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
               <div className="w-full h-[42px] pl-10 pr-4 border border-gray-200 rounded-lg bg-white flex justify-between items-center">
-                <span className="text-gray-700">{formData.passengers} Passenger{formData.passengers !== 1 ? 's' : ''}</span>
+                <span className="text-gray-700">
+                  {hasChanges ? formData.passengers : parseInt(passengers, 10)} 
+                  Passenger{(hasChanges ? formData.passengers : parseInt(passengers, 10)) !== 1 ? 's' : ''}
+                </span>
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => handlePassengerChange(false)}
