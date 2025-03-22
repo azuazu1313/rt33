@@ -131,16 +131,17 @@ const SearchForm = () => {
     const encodedPickup = encodeURIComponent(pickup.toLowerCase().replace(/\s+/g, '-'));
     const encodedDropoff = encodeURIComponent(dropoff.toLowerCase().replace(/\s+/g, '-'));
     const type = isReturn ? '2' : '1';
-    
     const formattedDepartureDate = formatDateForUrl(formData.departureDate);
+    
     let path = `/transfer/${encodedPickup}/${encodedDropoff}/${type}/${formattedDepartureDate}`;
     
     if (isReturn && formData.returnDate) {
       const formattedReturnDate = formatDateForUrl(formData.returnDate);
-      path += `/${formattedReturnDate}`;
+      path += `/${formattedReturnDate}/${passengers}/form`;
+    } else {
+      path += `/${passengers}/form`;
     }
     
-    path += `/${passengers}/form`;
     navigate(path);
   };
 
