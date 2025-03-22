@@ -3,7 +3,15 @@ import { MapPin, Calendar, Users, ArrowRight, Minus, Plus } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 
-// Helper function to parse date from URL format
+const formatDateForUrl = (dateStr: string) => {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  const year = date.getFullYear().toString().slice(-2);
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}${month}${day}`;
+};
+
 const parseDateFromUrl = (dateStr: string) => {
   if (!dateStr || dateStr.length !== 6) return '';
   const year = '20' + dateStr.slice(0, 2);
@@ -69,15 +77,6 @@ const SearchForm = () => {
     requestOptions: { componentRestrictions: { country: ['it', 'fr', 'es', 'de'] } },
     debounce: 300,
   });
-
-  const formatDateForUrl = (dateStr: string) => {
-    if (!dateStr) return '';
-    const date = new Date(dateStr);
-    const year = date.getFullYear().toString().slice(-2);
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}${month}${day}`;
-  };
 
   const handlePickupSelect = async (suggestion: google.maps.places.AutocompletePrediction) => {
     setPickupValue(suggestion.description, false);

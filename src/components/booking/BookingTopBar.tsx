@@ -13,6 +13,23 @@ interface BookingTopBarProps {
   currentStep?: number;
 }
 
+const formatDateForUrl = (dateStr: string) => {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  const year = date.getFullYear().toString().slice(-2);
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}${month}${day}`;
+};
+
+const formatDateForInput = (dateStr: string) => {
+  if (!dateStr || dateStr.length !== 6) return '';
+  const year = '20' + dateStr.slice(0, 2);
+  const month = dateStr.slice(2, 4);
+  const day = dateStr.slice(4, 6);
+  return `${year}-${month}-${day}`;
+};
+
 const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, returnDate, currentStep = 1 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,8 +37,8 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ret
     from,
     to,
     type,
-    date: date || '',
-    returnDate: returnDate || '',
+    date: formatDateForInput(date),
+    returnDate: returnDate ? formatDateForInput(returnDate) : '',
     passengers: 1
   });
 
@@ -59,8 +76,8 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ret
       from,
       to,
       type,
-      date,
-      returnDate: returnDate || '',
+      date: formatDateForInput(date),
+      returnDate: returnDate ? formatDateForInput(returnDate) : '',
       passengers: 1
     };
     setFormData(initialData);
@@ -82,23 +99,6 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ret
     setPickupValue(savedFormData.from, false);
     setDropoffValue(savedFormData.to, false);
   }, [currentStep]);
-
-  const formatDateForUrl = (dateStr: string) => {
-    if (!dateStr) return '';
-    const date = new Date(dateStr);
-    const year = date.getFullYear().toString().slice(-2);
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}${month}${day}`;
-  };
-
-  const formatDateForInput = (dateStr: string) => {
-    if (!dateStr || dateStr.length !== 6) return '';
-    const year = '20' + dateStr.slice(0, 2);
-    const month = dateStr.slice(2, 4);
-    const day = dateStr.slice(4, 6);
-    return `${year}-${month}-${day}`;
-  };
 
   const handlePickupSelect = async (suggestion: google.maps.places.AutocompletePrediction) => {
     setPickupValue(suggestion.description, false);
@@ -181,15 +181,6 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ret
     setSavedFormData(formData);
     setHasChanges(false);
   };
-
-  // Initialize form data with formatted dates
-  React.useEffect(() => {
-    setFormData(prev => ({
-      ...prev,
-      date: formatDateForInput(date),
-      returnDate: returnDate ? formatDateForInput(returnDate) : ''
-    }));
-  }, [date, returnDate]);
 
   return (
     <div className="py-4 px-4 sm:px-6 lg:px-8">
