@@ -21,7 +21,15 @@ const Step1Vehicle = () => {
   };
 
   const handleBack = () => {
-    navigate('/');
+    const searchParams = new URLSearchParams({
+      from: decodeURIComponent(from || ''),
+      to: decodeURIComponent(to || ''),
+      type: type || '2',
+      date: date || '',
+      ...(returnDate && { returnDate }),
+      passengers: passengers || '1'
+    });
+    navigate(`/?${searchParams.toString()}`);
   };
 
   return (

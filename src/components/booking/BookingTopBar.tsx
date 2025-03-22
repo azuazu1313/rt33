@@ -10,6 +10,7 @@ interface BookingTopBarProps {
   type: 'one-way' | 'round-trip';
   date: string;
   returnDate?: string;
+  passengers: string;
   currentStep?: number;
 }
 
@@ -30,7 +31,15 @@ const formatDateForInput = (dateStr: string) => {
   return `${year}-${month}-${day}`;
 };
 
-const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, returnDate, currentStep = 1 }) => {
+const BookingTopBar: React.FC<BookingTopBarProps> = ({ 
+  from, 
+  to, 
+  type, 
+  date, 
+  returnDate, 
+  passengers, 
+  currentStep = 1 
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState({
@@ -39,7 +48,7 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ret
     type,
     date: formatDateForInput(date),
     returnDate: returnDate ? formatDateForInput(returnDate) : '',
-    passengers: 1
+    passengers: parseInt(passengers || '1', 10)
   });
 
   const [hasChanges, setHasChanges] = useState(false);
@@ -78,14 +87,14 @@ const BookingTopBar: React.FC<BookingTopBarProps> = ({ from, to, type, date, ret
       type,
       date: formatDateForInput(date),
       returnDate: returnDate ? formatDateForInput(returnDate) : '',
-      passengers: 1
+      passengers: parseInt(passengers || '1', 10)
     };
     setFormData(initialData);
     setInitialFormData(initialData);
     setSavedFormData(initialData);
     setPickupValue(from, false);
     setDropoffValue(to, false);
-  }, [from, to, type, date, returnDate]);
+  }, [from, to, type, date, returnDate, passengers]);
 
   // Check for changes against saved data
   useEffect(() => {
